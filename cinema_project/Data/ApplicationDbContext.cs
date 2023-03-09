@@ -16,5 +16,7 @@ namespace cinema_project.Data
             : base(options)
         {
         }
+
+        public DbSet<cinema_project.Models.Genre> Genre { get; set; }
     }
 }

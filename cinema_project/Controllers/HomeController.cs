@@ -6,11 +6,21 @@ namespace cinema_project.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public IActionResult CreateMovie()
         {
-            _logger = logger;
+            return RedirectToAction("Index", "Movies");
+        }
+        public IActionResult CreateSession()
+        {
+            return RedirectToAction("Index", "Sessions");
+        }
+        public IActionResult CreateTicket()
+        {
+            return RedirectToAction("Index", "Tickets");
+        }
+        public IActionResult CreateGenre()
+        {
+            return RedirectToAction("Index", "Genres");
         }
 
         public IActionResult Index()
