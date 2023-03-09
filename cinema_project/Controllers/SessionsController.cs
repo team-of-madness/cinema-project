@@ -22,7 +22,13 @@ namespace cinema_project.Controllers
         // GET: Sessions
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Sessions.ToListAsync());
+            var sessions = await _context
+              .Sessions
+              .Include(s => s.Movie)
+              .ThenInclude(m => m.Genre)
+              .ToListAsync();
+
+            return View(sessions);
         }
 
         // GET: Sessions/Details/5

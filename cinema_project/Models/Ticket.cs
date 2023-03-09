@@ -11,6 +11,6 @@
         public int SessionId { get; set; }
 
         // Навігаційна властивість
-        // public Session Session { get; set; }
+        public Session Session { get; set; }
     }
 }

@@ -19,29 +19,75 @@
                 @Html.DisplayNameFor(model => model.UserId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SessionId)
+                @Html.DisplayNameFor(model => model.Session.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Session.EndDate)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Session.Movie.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Session.Movie.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Session.Movie.Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Session.Movie.MinAge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Session.Movie.Producer)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Session.Movie.Genre.GenreName)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Place)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SessionId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Place)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.EndDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Movie.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Movie.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Movie.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Movie.MinAge)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Movie.Producer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Movie.Genre.GenreName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

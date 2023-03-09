@@ -22,7 +22,14 @@ namespace cinema_project.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Tickets.ToListAsync());
+            var tickets = await _context
+                .Tickets
+                .Include(t => t.Session)
+                .ThenInclude(s => s.Movie)
+                .ThenInclude(m => m.Genre)
+                .ToListAsync();
+
+            return View(tickets);
         }
 
         // GET: Tickets/Details/5
@@ -148,14 +155,14 @@ namespace cinema_project.Controllers
             {
                 _context.Tickets.Remove(ticket);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TicketExists(int id)
         {
-          return _context.Tickets.Any(e => e.Id == id);
+            return _context.Tickets.Any(e => e.Id == id);
         }
     }
 }

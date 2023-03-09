@@ -18,30 +18,64 @@
             <th>
                 @Html.DisplayNameFor(model => model.EndDate)
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.MovieId)
+                @Html.DisplayNameFor(model => model.Movie.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.MinAge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.Producer)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Movie.Genre.GenreName)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Movie.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Movie.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Movie.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Movie.MinAge)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Movie.Producer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Movie.Genre.GenreName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -22,7 +22,12 @@ namespace cinema_project.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Movies.ToListAsync());
+            var movies = await _context
+                .Movies
+                .Include(m => m.Genre)
+                .ToListAsync();
+            
+            return View(movies);
         }
 
         // GET: Movies/Details/5

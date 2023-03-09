@@ -13,8 +13,8 @@ namespace cinema_project.Models
         public int MovieId { get; set; }
 
         // Навігаційна властивість
-        //public Movie Movie { get; set; }
+        public Movie Movie { get; set; }
 
-        //public List<Ticket> Tickets { get; set; }
+        public List<Ticket> Tickets { get; set; }
     }
 }

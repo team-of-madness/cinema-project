@@ -17,6 +17,29 @@ namespace cinema_project.Data
         {
         }
 
-        public DbSet<cinema_project.Models.Genre> Genre { get; set; }
+        public DbSet<Genre> Genre { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<Genre>()
+                .HasMany<Movie>(genre => genre.Movies)
+                .WithOne(movie => movie.Genre)
+                .HasForeignKey(movie => movie.GenreId);
+
+            base.OnModelCreating(builder);
+            builder.Entity<Movie>()
+                .HasMany<Session>(movie => movie.Sessions)
+                .WithOne(session => session.Movie)
+                .HasForeignKey(session => session.MovieId);
+
+            base.OnModelCreating(builder);
+            builder.Entity<Session>()
+                .HasMany<Ticket>(session => session.Tickets)
+                .WithOne(ticket => ticket.Session)
+                .HasForeignKey(ticket => ticket.SessionId);
+
+        }
     }
+
 }
