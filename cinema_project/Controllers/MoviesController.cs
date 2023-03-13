@@ -19,18 +19,14 @@ namespace cinema_project.Controllers
             _context = context;
         }
 
-        // GET: Movies
+        // GET: Movies1
         public async Task<IActionResult> Index()
         {
-            var movies = await _context
-                .Movies
-                .Include(m => m.Genre)
-                .ToListAsync();
-            
-            return View(movies);
+            var applicationDbContext = _context.Movies.Include(m => m.Genre);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Movies/Details/5
+        // GET: Movies1/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Movies == null)
@@ -39,6 +35,7 @@ namespace cinema_project.Controllers
             }
 
             var movie = await _context.Movies
+                .Include(m => m.Genre)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null)
             {
@@ -48,13 +45,14 @@ namespace cinema_project.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Create
+        // GET: Movies1/Create
         public IActionResult Create()
         {
+            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id");
             return View();
         }
 
-        // POST: Movies/Create
+        // POST: Movies1/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -63,14 +61,15 @@ namespace cinema_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
+                return View(movie);
             }
-            return View(movie);
+            _context.Add(movie);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Movies/Edit/5
+        // GET: Movies1/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Movies == null)
@@ -83,10 +82,11 @@ namespace cinema_project.Controllers
             {
                 return NotFound();
             }
+            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
             return View(movie);
         }
 
-        // POST: Movies/Edit/5
+        // POST: Movies1/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -100,28 +100,30 @@ namespace cinema_project.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(movie);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MovieExists(movie.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
+                return View(movie);
             }
-            return View(movie);
+
+            try
+            {
+                _context.Update(movie);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MovieExists(movie.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Movies/Delete/5
+        // GET: Movies1/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Movies == null)
@@ -130,6 +132,7 @@ namespace cinema_project.Controllers
             }
 
             var movie = await _context.Movies
+                .Include(m => m.Genre)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null)
             {
@@ -139,7 +142,7 @@ namespace cinema_project.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Delete/5
+        // POST: Movies1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

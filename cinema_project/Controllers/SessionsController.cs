@@ -22,13 +22,8 @@ namespace cinema_project.Controllers
         // GET: Sessions
         public async Task<IActionResult> Index()
         {
-            var sessions = await _context
-              .Sessions
-              .Include(s => s.Movie)
-              .ThenInclude(m => m.Genre)
-              .ToListAsync();
-
-            return View(sessions);
+            var applicationDbContext = _context.Sessions.Include(s => s.Movie);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Sessions/Details/5
@@ -40,6 +35,7 @@ namespace cinema_project.Controllers
             }
 
             var session = await _context.Sessions
+                .Include(s => s.Movie)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (session == null)
             {
@@ -52,6 +48,7 @@ namespace cinema_project.Controllers
         // GET: Sessions/Create
         public IActionResult Create()
         {
+            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id");
             return View();
         }
 
@@ -64,11 +61,13 @@ namespace cinema_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(session);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
+                return View(session);
             }
-            return View(session);
+
+            _context.Add(session);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Sessions/Edit/5
@@ -84,6 +83,7 @@ namespace cinema_project.Controllers
             {
                 return NotFound();
             }
+            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
             return View(session);
         }
 
@@ -101,25 +101,27 @@ namespace cinema_project.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(session);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SessionExists(session.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
+                return View(session);
             }
-            return View(session);
+
+            try
+            {
+                _context.Update(session);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SessionExists(session.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Sessions/Delete/5
@@ -131,6 +133,7 @@ namespace cinema_project.Controllers
             }
 
             var session = await _context.Sessions
+                .Include(s => s.Movie)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (session == null)
             {

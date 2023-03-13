@@ -58,11 +58,11 @@ namespace cinema_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(genre);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(genre);
             }
-            return View(genre);
+            _context.Add(genre);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Genres/Edit/5
@@ -95,7 +95,9 @@ namespace cinema_project.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                return View(genre);
+            }
+            try
                 {
                     _context.Update(genre);
                     await _context.SaveChangesAsync();
@@ -112,8 +114,7 @@ namespace cinema_project.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(genre);
+            
         }
 
         // GET: Genres/Delete/5

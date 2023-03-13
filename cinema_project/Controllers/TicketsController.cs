@@ -22,14 +22,8 @@ namespace cinema_project.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var tickets = await _context
-                .Tickets
-                .Include(t => t.Session)
-                .ThenInclude(s => s.Movie)
-                .ThenInclude(m => m.Genre)
-                .ToListAsync();
-
-            return View(tickets);
+            var applicationDbContext = _context.Tickets.Include(t => t.Session);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Tickets/Details/5
@@ -41,6 +35,7 @@ namespace cinema_project.Controllers
             }
 
             var ticket = await _context.Tickets
+                .Include(t => t.Session)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
@@ -53,6 +48,7 @@ namespace cinema_project.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
+            ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id");
             return View();
         }
 
@@ -65,11 +61,13 @@ namespace cinema_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ticket);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id", ticket.SessionId);
+                return View(ticket);
             }
-            return View(ticket);
+
+            _context.Add(ticket);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Tickets/Edit/5
@@ -85,6 +83,7 @@ namespace cinema_project.Controllers
             {
                 return NotFound();
             }
+            ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id", ticket.SessionId);
             return View(ticket);
         }
 
@@ -102,25 +101,27 @@ namespace cinema_project.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(ticket);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TicketExists(ticket.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id", ticket.SessionId);
+                return View(ticket);
             }
-            return View(ticket);
+
+            try
+            {
+                _context.Update(ticket);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TicketExists(ticket.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Tickets/Delete/5
@@ -132,6 +133,7 @@ namespace cinema_project.Controllers
             }
 
             var ticket = await _context.Tickets
+                .Include(t => t.Session)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
@@ -155,14 +157,14 @@ namespace cinema_project.Controllers
             {
                 _context.Tickets.Remove(ticket);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TicketExists(int id)
         {
-            return _context.Tickets.Any(e => e.Id == id);
+          return _context.Tickets.Any(e => e.Id == id);
         }
     }
 }
