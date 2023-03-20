@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using cinema_project.Data;
 
@@ -11,9 +12,10 @@ using cinema_project.Data;
 namespace cinema_project.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230320174112_lab9-11")]
+    partial class lab911
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -424,7 +426,7 @@ namespace cinema_project.Data.Migrations
             modelBuilder.Entity("cinema_project.Models.Ticket", b =>
                 {
                     b.HasOne("cinema_project.Models.Place", "Place")
-                        .WithMany("Tickets2")
+                        .WithMany("Tickets")
                         .HasForeignKey("PlaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -510,7 +512,7 @@ namespace cinema_project.Data.Migrations
 
             modelBuilder.Entity("cinema_project.Models.Place", b =>
                 {
-                    b.Navigation("Tickets2");
+                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("cinema_project.Models.Session", b =>

@@ -8,6 +8,9 @@ namespace cinema_project.Data
     {
         public DbSet<Session> Sessions { get; set; }
 
+
+
+
         public DbSet<Ticket> Tickets { get; set; }
 
         public DbSet<Movie> Movies { get; set; }
@@ -19,6 +22,9 @@ namespace cinema_project.Data
 
         public DbSet<Genre> Genre { get; set; }
 
+        public DbSet<Hall> Halls { get; set; }
+
+        public DbSet<Place> Places { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -38,6 +44,25 @@ namespace cinema_project.Data
                 .HasMany<Ticket>(session => session.Tickets)
                 .WithOne(ticket => ticket.Session)
                 .HasForeignKey(ticket => ticket.SessionId);
+
+            base.OnModelCreating(builder);
+            builder.Entity<Hall>()
+                .HasMany<Place>(hall => hall.Places)
+                .WithOne(place => place.Hall)
+                .HasForeignKey(place => place.HallId);
+
+            base.OnModelCreating(builder);
+            builder.Entity<Hall>()
+                .HasMany<Session>(hall => hall.Sessions)
+                .WithOne(session => session.Hall)
+                .HasForeignKey(session => session.HallId);
+
+            base.OnModelCreating(builder);
+            builder.Entity<Place>()
+                .HasMany<Ticket>(place => place.Tickets)
+                .WithOne(ticket => ticket.Place)
+                .HasForeignKey(ticket => ticket.PlaceId)
+                ;
 
         }
     }

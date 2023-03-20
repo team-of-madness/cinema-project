@@ -27,7 +27,10 @@ namespace cinema_project.Controllers
         {
             return View();
         }
-
+        //public IActionResult Purchase()
+        //{
+            
+        //}
         public IActionResult Privacy()
         {
             return View();

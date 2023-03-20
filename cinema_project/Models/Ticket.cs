@@ -4,13 +4,15 @@
     {
         public int Id { get; set; }
 
-        public int Place { get; set; }
-        public int UserId { get; set; }
+        public string UserName { get; set; }
 
         // Зовнішній ключ
         public int SessionId { get; set; }
+        public int PlaceId { get; set; }
 
         // Навігаційна властивість
+
+        public Place Place { get; set; }
         public Session Session { get; set; }
     }
 }

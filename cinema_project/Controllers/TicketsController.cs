@@ -57,7 +57,7 @@ namespace cinema_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Place,UserId,SessionId")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("Id,Place,UserName,SessionId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace cinema_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Place,UserId,SessionId")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Place,UserName,SessionId")] Ticket ticket)
         {
             if (id != ticket.Id)
             {
