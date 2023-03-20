@@ -31,7 +31,8 @@ namespace cinema_project.Data
             builder.Entity<Genre>()
                 .HasMany<Movie>(genre => genre.Movies)
                 .WithOne(movie => movie.Genre)
-                .HasForeignKey(movie => movie.GenreId);
+                .HasForeignKey(movie => movie.GenreId)
+                ;
 
             base.OnModelCreating(builder);
             builder.Entity<Movie>()
