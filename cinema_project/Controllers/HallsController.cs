@@ -10,113 +10,104 @@ using cinema_project.Models;
 
 namespace cinema_project.Controllers
 {
-    public class MoviesController : Controller
+    public class HallsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MoviesController(ApplicationDbContext context)
+        public HallsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Movies
+        // GET: Halls
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Movies.Include(m => m.Genre);
-            return View(await applicationDbContext.ToListAsync());
+              return _context.Halls != null ? 
+                          View(await _context.Halls.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Halls'  is null.");
         }
 
-        // GET: Movies/Details/5
+        // GET: Halls/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Movies == null)
+            if (id == null || _context.Halls == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movies
-                .Include(m => m.Genre)
+            var hall = await _context.Halls
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (hall == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(hall);
         }
 
-        // GET: Movies/Create
+        // GET: Halls/Create
         public IActionResult Create()
         {
-            ViewData["GenreId"] = new SelectList(_context.Genre, "PlaceId", "PlaceId");
-            IEnumerable<Genre> genres = _context.Genre;
-            ViewBag.Genre = genres;
             return View();
         }
 
-        // POST: Movies/Create
+        // POST: Halls/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PlaceId,Name,Description,Duration,MinAge,Producer,GenreId")] Movie movie)
+        public async Task<IActionResult> Create([Bind("PlaceId,Name,RowNumber,RowPlaces")] Hall hall)
         {
             if (ModelState.IsValid)
             {
-                ViewData["GenreId"] = new SelectList(_context.Genre, "PlaceId", "PlaceId", movie.GenreId);
-                return View(movie);
+                return View(hall);
             }
-
-            _context.Add(movie);
+            _context.Add(hall);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Movies/Edit/5
+        // GET: Halls/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Movies == null)
+            if (id == null || _context.Halls == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie == null)
+            var hall = await _context.Halls.FindAsync(id);
+            if (hall == null)
             {
                 return NotFound();
             }
-            ViewData["GenreId"] = new SelectList(_context.Genre, "PlaceId", "PlaceId", movie.GenreId);
-            IEnumerable<Genre> genres = _context.Genre;
-            ViewBag.Genre = genres;
-            return View(movie);
+            return View(hall);
         }
 
-        // POST: Movies/Edit/5
+        // POST: Halls/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Duration,MinAge,Producer,GenreId")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("PlaceId,Name,RowNumber,RowPlaces")] Hall hall)
         {
-            if (id != movie.Id)
+            if (id != hall.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                ViewData["GenreId"] = new SelectList(_context.Genre, "PlaceId", "PlaceId", movie.GenreId);
-                return View(movie);
+                return View(hall);
             }
 
             try
             {
-                _context.Update(movie);
+                _context.Update(hall);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MovieExists(movie.Id))
+                if (!HallExists(hall.Id))
                 {
                     return NotFound();
                 }
@@ -128,47 +119,46 @@ namespace cinema_project.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Movies/Delete/5
+        // GET: Halls/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Movies == null)
+            if (id == null || _context.Halls == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movies
-                .Include(m => m.Genre)
+            var hall = await _context.Halls
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (hall == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(hall);
         }
 
-        // POST: Movies/Delete/5
+        // POST: Halls/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Movies == null)
+            if (_context.Halls == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Movies'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Halls'  is null.");
             }
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie != null)
+            var hall = await _context.Halls.FindAsync(id);
+            if (hall != null)
             {
-                _context.Movies.Remove(movie);
+                _context.Halls.Remove(hall);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MovieExists(int id)
+        private bool HallExists(int id)
         {
-          return (_context.Movies?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Halls?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

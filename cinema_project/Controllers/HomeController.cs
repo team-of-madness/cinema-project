@@ -24,7 +24,15 @@ namespace cinema_project.Controllers
         {
             return RedirectToAction("Index", "Genres");
         }
+        public IActionResult CreateHall()
+        {
+            return RedirectToAction("Index", "Halls");
+        }
 
+        public IActionResult CreatePlace()
+        {
+            return RedirectToAction("Index", "Places");
+        }
         public IActionResult Index()
         {
             //IEnumerable<Movie> movies = _dbContext.Movies.ToList();

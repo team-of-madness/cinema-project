@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using cinema_project.Data;
@@ -15,14 +19,14 @@ namespace cinema_project.Controllers
             _context = context;
         }
 
-        // GET: Sessions1
+        // GET: Sessions
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Sessions.Include(s => s.Hall).Include(s => s.Movie);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Sessions1/Details/5
+        // GET: Sessions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Sessions == null)
@@ -42,33 +46,38 @@ namespace cinema_project.Controllers
             return View(session);
         }
 
-        // GET: Sessions1/Create
+        // GET: Sessions/Create
         public IActionResult Create()
         {
-            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id");
-            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id");
+            ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId");
+            ViewData["MovieId"] = new SelectList(_context.Movies, "PlaceId", "PlaceId");
+            IEnumerable<Hall> halls = _context.Halls;
+            ViewBag.Halls = halls;
+            IEnumerable<Movie> movies = _context.Movies;
+            ViewBag.Movies = movies;
             return View();
         }
 
-        // POST: Sessions1/Create
+        // POST: Sessions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,HallId,MovieId")] Session session)
+        public async Task<IActionResult> Create([Bind("PlaceId,StartDate,EndDate,HallId,MovieId")] Session session)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(session);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId", session.HallId);
+                ViewData["MovieId"] = new SelectList(_context.Movies, "PlaceId", "PlaceId", session.MovieId);
+                return View(session);
             }
-            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
-            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
-            return View(session);
+
+            _context.Add(session);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Sessions1/Edit/5
+        // GET: Sessions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Sessions == null)
@@ -81,17 +90,21 @@ namespace cinema_project.Controllers
             {
                 return NotFound();
             }
-            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
-            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
+            ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId", session.HallId);
+            ViewData["MovieId"] = new SelectList(_context.Movies, "PlaceId", "PlaceId", session.MovieId);
+            IEnumerable<Hall> halls = _context.Halls;
+            ViewBag.Halls = halls;
+            IEnumerable<Movie> movies = _context.Movies;
+            ViewBag.Movies = movies;
             return View(session);
         }
 
-        // POST: Sessions1/Edit/5
+        // POST: Sessions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StartDate,EndDate,HallId,MovieId")] Session session)
+        public async Task<IActionResult> Edit(int id, [Bind("PlaceId,StartDate,EndDate,HallId,MovieId")] Session session)
         {
             if (id != session.Id)
             {
@@ -100,30 +113,31 @@ namespace cinema_project.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(session);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SessionExists(session.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId", session.HallId);
+                ViewData["MovieId"] = new SelectList(_context.Movies, "PlaceId", "PlaceId", session.MovieId);
+                return View(session);
             }
-            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
-            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
-            return View(session);
+
+            try
+            {
+                _context.Update(session);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SessionExists(session.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Sessions1/Delete/5
+        // GET: Sessions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Sessions == null)
@@ -143,7 +157,7 @@ namespace cinema_project.Controllers
             return View(session);
         }
 
-        // POST: Sessions1/Delete/5
+        // POST: Sessions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -157,14 +171,14 @@ namespace cinema_project.Controllers
             {
                 _context.Sessions.Remove(session);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SessionExists(int id)
         {
-            return (_context.Sessions?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Sessions?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

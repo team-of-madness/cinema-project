@@ -22,7 +22,9 @@ namespace cinema_project.Controllers
         // GET: Genres
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Genre.ToListAsync());
+              return _context.Genre != null ? 
+                          View(await _context.Genre.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Genre'  is null.");
         }
 
         // GET: Genres/Details/5
@@ -60,6 +62,7 @@ namespace cinema_project.Controllers
             {
                 return View(genre);
             }
+
             _context.Add(genre);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -97,24 +100,24 @@ namespace cinema_project.Controllers
             {
                 return View(genre);
             }
+
             try
+            {
+                _context.Update(genre);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GenreExists(genre.Id))
                 {
-                    _context.Update(genre);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!GenreExists(genre.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
-            
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Genres/Delete/5
@@ -156,7 +159,7 @@ namespace cinema_project.Controllers
 
         private bool GenreExists(int id)
         {
-          return _context.Genre.Any(e => e.Id == id);
+          return (_context.Genre?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

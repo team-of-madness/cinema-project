@@ -22,7 +22,7 @@ namespace cinema_project.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tickets.Include(t => t.Session);
+            var applicationDbContext = _context.Tickets.Include(t => t.Place).Include(t => t.Session);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace cinema_project.Controllers
             }
 
             var ticket = await _context.Tickets
+                .Include(t => t.Place)
                 .Include(t => t.Session)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
@@ -48,6 +49,7 @@ namespace cinema_project.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
+            ViewData["PlaceId"] = new SelectList(_context.Places, "PlaceId", "PlaceId");
             ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id");
             return View();
         }
@@ -57,17 +59,19 @@ namespace cinema_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Place,UserName,SessionId")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("Id,UserName,SessionId,PlaceId")] Ticket ticket)
         {
+
             if (ModelState.IsValid)
             {
+                ViewData["PlaceId"] = new SelectList(_context.Places, "PlaceId", "PlaceId", ticket.PlaceId);
                 ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id", ticket.SessionId);
                 return View(ticket);
             }
-
             _context.Add(ticket);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+
         }
 
         // GET: Tickets/Edit/5
@@ -83,6 +87,7 @@ namespace cinema_project.Controllers
             {
                 return NotFound();
             }
+            ViewData["PlaceId"] = new SelectList(_context.Places, "PlaceId", "PlaceId", ticket.PlaceId);
             ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id", ticket.SessionId);
             return View(ticket);
         }
@@ -92,7 +97,7 @@ namespace cinema_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Place,UserName,SessionId")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,SessionId,PlaceId")] Ticket ticket)
         {
             if (id != ticket.Id)
             {
@@ -101,6 +106,7 @@ namespace cinema_project.Controllers
 
             if (ModelState.IsValid)
             {
+                ViewData["PlaceId"] = new SelectList(_context.Places, "PlaceId", "PlaceId", ticket.PlaceId);
                 ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id", ticket.SessionId);
                 return View(ticket);
             }
@@ -133,6 +139,7 @@ namespace cinema_project.Controllers
             }
 
             var ticket = await _context.Tickets
+                .Include(t => t.Place)
                 .Include(t => t.Session)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
@@ -164,7 +171,7 @@ namespace cinema_project.Controllers
 
         private bool TicketExists(int id)
         {
-          return _context.Tickets.Any(e => e.Id == id);
+          return (_context.Tickets?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

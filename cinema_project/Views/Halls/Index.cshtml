@@ -1,4 +1,4 @@
-﻿@model IEnumerable<cinema_project.Models.Session>
+﻿@model IEnumerable<cinema_project.Models.Hall>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,16 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+                @Html.DisplayNameFor(model => model.RowNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Hall)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Movie)
+                @Html.DisplayNameFor(model => model.RowPlaces)
             </th>
             <th></th>
         </tr>
@@ -31,16 +28,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
+                @Html.DisplayFor(modelItem => item.RowNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Hall.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Movie.Name)
+                @Html.DisplayFor(modelItem => item.RowPlaces)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
