@@ -16,6 +16,5 @@
         // Навігаційна властивість
         public Genre Genre { get; set; }
         public List<Session> Sessions { get; set; }
-
     }
 }

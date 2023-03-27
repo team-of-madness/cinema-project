@@ -49,6 +49,8 @@ namespace cinema_project.Controllers
         public IActionResult Create()
         {
             ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id");
+            IEnumerable<Genre> genres = _context.Genre;
+            ViewBag.Genre = genres;
             return View();
         }
 
@@ -62,6 +64,8 @@ namespace cinema_project.Controllers
             if (ModelState.IsValid)
             {
                 ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
+                IEnumerable<Genre> genres = _context.Genre;
+                ViewBag.Genre = genres;
                 return View(movie);
             }
             _context.Add(movie);
@@ -83,6 +87,8 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
             ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
+            IEnumerable<Genre> genres = _context.Genre;
+            ViewBag.Genre = genres;
             return View(movie);
         }
 
@@ -101,6 +107,8 @@ namespace cinema_project.Controllers
             if (ModelState.IsValid)
             {
                 ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
+                IEnumerable<Genre> genres = _context.Genre;
+                ViewBag.Genre = genres;
                 return View(movie);
             }
 

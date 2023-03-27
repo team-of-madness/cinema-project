@@ -9,17 +9,17 @@ using cinema_project.Data;
 
 #nullable disable
 
-namespace cinema_project.Data.Migrations
+namespace cinema_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230309145027_firstmg4")]
-    partial class firstmg4
+    [Migration("20230327133620_lab1")]
+    partial class lab1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.14")
+                .HasAnnotation("ProductVersion", "6.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -39,6 +39,29 @@ namespace cinema_project.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genre");
+                });
+
+            modelBuilder.Entity("cinema_project.Models.Hall", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RowNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RowPlaces")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Halls");
                 });
 
             modelBuilder.Entity("cinema_project.Models.Movie", b =>
@@ -77,6 +100,30 @@ namespace cinema_project.Data.Migrations
                     b.ToTable("Movies");
                 });
 
+            modelBuilder.Entity("cinema_project.Models.Place", b =>
+                {
+                    b.Property<int>("PlaceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlaceId"), 1L, 1);
+
+                    b.Property<int>("HallId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlaceNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RowNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlaceId");
+
+                    b.HasIndex("HallId");
+
+                    b.ToTable("Places");
+                });
+
             modelBuilder.Entity("cinema_project.Models.Session", b =>
                 {
                     b.Property<int>("Id")
@@ -88,6 +135,9 @@ namespace cinema_project.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("HallId")
+                        .HasColumnType("int");
+
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
@@ -95,6 +145,8 @@ namespace cinema_project.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HallId");
 
                     b.HasIndex("MovieId");
 
@@ -109,16 +161,19 @@ namespace cinema_project.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Place")
+                    b.Property<int>("PlaceId")
                         .HasColumnType("int");
 
                     b.Property<int>("SessionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlaceId");
 
                     b.HasIndex("SessionId");
 
@@ -338,24 +393,51 @@ namespace cinema_project.Data.Migrations
                     b.Navigation("Genre");
                 });
 
+            modelBuilder.Entity("cinema_project.Models.Place", b =>
+                {
+                    b.HasOne("cinema_project.Models.Hall", "Hall")
+                        .WithMany("Places")
+                        .HasForeignKey("HallId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hall");
+                });
+
             modelBuilder.Entity("cinema_project.Models.Session", b =>
                 {
+                    b.HasOne("cinema_project.Models.Hall", "Hall")
+                        .WithMany("Sessions")
+                        .HasForeignKey("HallId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("cinema_project.Models.Movie", "Movie")
                         .WithMany("Sessions")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Hall");
+
                     b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("cinema_project.Models.Ticket", b =>
                 {
+                    b.HasOne("cinema_project.Models.Place", "Place")
+                        .WithMany("Tickets")
+                        .HasForeignKey("PlaceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("cinema_project.Models.Session", "Session")
                         .WithMany("Tickets")
                         .HasForeignKey("SessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Place");
 
                     b.Navigation("Session");
                 });
@@ -416,9 +498,21 @@ namespace cinema_project.Data.Migrations
                     b.Navigation("Movies");
                 });
 
+            modelBuilder.Entity("cinema_project.Models.Hall", b =>
+                {
+                    b.Navigation("Places");
+
+                    b.Navigation("Sessions");
+                });
+
             modelBuilder.Entity("cinema_project.Models.Movie", b =>
                 {
                     b.Navigation("Sessions");
+                });
+
+            modelBuilder.Entity("cinema_project.Models.Place", b =>
+                {
+                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("cinema_project.Models.Session", b =>

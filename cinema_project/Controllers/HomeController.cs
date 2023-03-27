@@ -27,8 +27,9 @@ namespace cinema_project.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Movie> movies = _dbContext.Movies.ToList();
-            return View(movies);
+            //IEnumerable<Movie> movies = _dbContext.Movies.ToList();
+            //return View(movies);
+            return View();
         }
 
         [HttpGet]

@@ -13,7 +13,5 @@
         public Hall Hall { get; set; }
 
         public List<Ticket> Tickets { get; set; }
-
-
     }
 }
