@@ -48,7 +48,7 @@ namespace cinema_project.Controllers
         // GET: Movies/Create
         public IActionResult Create()
         {
-            ViewData["GenreId"] = new SelectList(_context.Genre, "PlaceId", "PlaceId");
+            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id");
             IEnumerable<Genre> genres = _context.Genre;
             ViewBag.Genre = genres;
             return View();
@@ -59,11 +59,11 @@ namespace cinema_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PlaceId,Name,Description,Duration,MinAge,Producer,GenreId")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Duration,MinAge,Producer,GenreId")] Movie movie)
         {
             if (ModelState.IsValid)
             {
-                ViewData["GenreId"] = new SelectList(_context.Genre, "PlaceId", "PlaceId", movie.GenreId);
+                ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
                 return View(movie);
             }
 
@@ -85,7 +85,7 @@ namespace cinema_project.Controllers
             {
                 return NotFound();
             }
-            ViewData["GenreId"] = new SelectList(_context.Genre, "PlaceId", "PlaceId", movie.GenreId);
+            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
             IEnumerable<Genre> genres = _context.Genre;
             ViewBag.Genre = genres;
             return View(movie);
@@ -105,7 +105,7 @@ namespace cinema_project.Controllers
 
             if (ModelState.IsValid)
             {
-                ViewData["GenreId"] = new SelectList(_context.Genre, "PlaceId", "PlaceId", movie.GenreId);
+                ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
                 return View(movie);
             }
 

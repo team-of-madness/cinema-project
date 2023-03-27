@@ -49,8 +49,8 @@ namespace cinema_project.Controllers
         // GET: Sessions/Create
         public IActionResult Create()
         {
-            ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId");
-            ViewData["MovieId"] = new SelectList(_context.Movies, "PlaceId", "PlaceId");
+            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id");
+            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id");
             IEnumerable<Hall> halls = _context.Halls;
             ViewBag.Halls = halls;
             IEnumerable<Movie> movies = _context.Movies;
@@ -63,12 +63,12 @@ namespace cinema_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PlaceId,StartDate,EndDate,HallId,MovieId")] Session session)
+        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,HallId,MovieId")] Session session)
         {
             if (ModelState.IsValid)
             {
-                ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId", session.HallId);
-                ViewData["MovieId"] = new SelectList(_context.Movies, "PlaceId", "PlaceId", session.MovieId);
+                ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
+                ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
                 return View(session);
             }
 
@@ -90,8 +90,8 @@ namespace cinema_project.Controllers
             {
                 return NotFound();
             }
-            ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId", session.HallId);
-            ViewData["MovieId"] = new SelectList(_context.Movies, "PlaceId", "PlaceId", session.MovieId);
+            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
+            ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
             IEnumerable<Hall> halls = _context.Halls;
             ViewBag.Halls = halls;
             IEnumerable<Movie> movies = _context.Movies;
@@ -104,7 +104,7 @@ namespace cinema_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PlaceId,StartDate,EndDate,HallId,MovieId")] Session session)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,StartDate,EndDate,HallId,MovieId")] Session session)
         {
             if (id != session.Id)
             {
@@ -113,8 +113,8 @@ namespace cinema_project.Controllers
 
             if (ModelState.IsValid)
             {
-                ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId", session.HallId);
-                ViewData["MovieId"] = new SelectList(_context.Movies, "PlaceId", "PlaceId", session.MovieId);
+                ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
+                ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
                 return View(session);
             }
 

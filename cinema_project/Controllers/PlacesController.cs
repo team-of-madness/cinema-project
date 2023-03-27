@@ -48,7 +48,7 @@ namespace cinema_project.Controllers
         // GET: Places/Create
         public IActionResult Create()
         {
-            ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId"); 
+            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id");
             IEnumerable<Hall> halls = _context.Halls;
             ViewBag.Halls = halls;
             return View();
@@ -63,7 +63,7 @@ namespace cinema_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId", place.HallId);
+                ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", place.HallId);
                 return View(place);
             }
 
@@ -85,7 +85,7 @@ namespace cinema_project.Controllers
             {
                 return NotFound();
             }
-            ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId", place.HallId);
+            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", place.HallId);
             IEnumerable<Hall> halls = _context.Halls;
             ViewBag.Halls = halls;
 
@@ -106,7 +106,7 @@ namespace cinema_project.Controllers
 
             if (ModelState.IsValid)
             {
-                ViewData["HallId"] = new SelectList(_context.Halls, "PlaceId", "PlaceId", place.HallId);
+                ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", place.HallId);
                 return View(place);
             }
 
