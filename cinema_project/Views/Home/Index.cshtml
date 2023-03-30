@@ -1,13 +1,12 @@
-﻿@*@model IEnumerable<cinema_project.Models.Movie>*@
+﻿@model IEnumerable<cinema_project.Models.Movie>
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome to the cinema</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
-@*    <table class="table">
+    <table class="table">
         <thead>
             <tr>
                 <th>
@@ -51,16 +50,13 @@
                         @Html.DisplayFor(modelItem => item.Producer)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Genre.Id)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.Genre.GenreName)
                     </td>
                     <td>
-    <a asp-action="ChooseSession" asp-route-id="@item.Id">ChooseSession</a>
+                        <a asp-action="ChooseSession" asp-route-id="@item.Id">Choose Session</a>
                     </td>
                 </tr>
             }
         </tbody>
-    </table>*@
+    </table>
 </div>

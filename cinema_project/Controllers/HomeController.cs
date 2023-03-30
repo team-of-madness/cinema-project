@@ -1,6 +1,7 @@
 ﻿using cinema_project.Data;
 using cinema_project.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace cinema_project.Controllers
@@ -8,6 +9,11 @@ namespace cinema_project.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
+
+        public HomeController(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public IActionResult CreateMovie()
         {
             return RedirectToAction("Index", "Movies");
@@ -33,27 +39,26 @@ namespace cinema_project.Controllers
         {
             return RedirectToAction("Index", "Places");
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            //IEnumerable<Movie> movies = _dbContext.Movies.ToList();
-            //return View(movies);
-            return View();
+            var movies_dbContext = _dbContext.Movies.Include(g => g.Genre);
+            return View(await movies_dbContext.ToListAsync());
         }
 
         [HttpGet]
-        public async Task<ActionResult> ChooseSession(int? Id)
+        public async Task<IActionResult> ChooseSession(int? Id)
         {
             
-            IEnumerable<Session> sessions = _dbContext.Sessions.Where(item => item.Id == Id);
-            return View(sessions);
+            var sessions_dbContext = _dbContext.Sessions.Where(item => item.Movie.Id == Id).Include(m => m.Movie).Include(h => h.Hall).Include(t => t.Tickets);
+            return View(await sessions_dbContext.ToListAsync());
         }
 
         [HttpGet]
-        public async Task<ActionResult> ChoosePlace(int? Id)
+        public async Task<IActionResult> ChoosePlace(int? Id)
         {
 
-            IEnumerable<Place> places = _dbContext.Places.Where(item => item.PlaceId == Id);
-            return View(places);
+            var places_dbContext = _dbContext.Places.Where(item => item.PlaceId == Id);
+            return View(await places_dbContext.ToListAsync());
         }
 
         public IActionResult Privacy()
