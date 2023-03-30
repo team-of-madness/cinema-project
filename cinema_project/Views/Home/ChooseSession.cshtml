@@ -50,7 +50,7 @@
                         @Html.DisplayFor(modelItem => item.Movie.Name)
                     </td>
                     <td>
-                        (@Html.DisplayFor(modelItem => item.Hall.RowNumber) * @Html.DisplayFor(modelItem => item.Hall.RowNumber)) - @Html.DisplayFor(modelItem => item.Tickets.Count)
+                        (@Html.DisplayFor(modelItem => item.Hall.Rows) * @Html.DisplayFor(modelItem => item.Hall.Columns)) - @Html.DisplayFor(modelItem => item.Tickets.Count)
                     </td>
                     <td>
                         <a asp-action="ChoosePlace" asp-route-id="@item.Id">Choose Place</a>

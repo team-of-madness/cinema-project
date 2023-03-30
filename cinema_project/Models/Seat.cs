@@ -1,12 +1,12 @@
 ﻿namespace cinema_project.Models
 {
-    public class Place
+    public class Seat
     {
-        public int PlaceId { get; set; }
+        public int Id { get; set; }
 
-        public int RowNumber { get; set; }
+        public int Row { get; set; }
 
-        public int PlaceNumber { get; set; }
+        public int Column { get; set; }
 
         public int HallId { get; set; }
         

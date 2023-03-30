@@ -35,9 +35,9 @@ namespace cinema_project.Controllers
             return RedirectToAction("Index", "Halls");
         }
 
-        public IActionResult CreatePlace()
+        public IActionResult CreateSeat()
         {
-            return RedirectToAction("Index", "Places");
+            return RedirectToAction("Index", "Seats");
         }
         public async Task<IActionResult> Index()
         {
@@ -56,9 +56,9 @@ namespace cinema_project.Controllers
         [HttpGet]
         public async Task<IActionResult> ChoosePlace(int? Id)
         {
-
-            var places_dbContext = _dbContext.Places.Where(item => item.PlaceId == Id);
-            return View(await places_dbContext.ToListAsync());
+            //Incorrect logic. Required to fix
+            var seats_dbContext = _dbContext.Seats.Where(item => item.Id == Id);
+            return View(await seats_dbContext.ToListAsync());
         }
 
         public IActionResult Privacy()

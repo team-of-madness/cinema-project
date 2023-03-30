@@ -1,35 +1,33 @@
-﻿@model cinema_project.Models.Place
+﻿@model cinema_project.Models.Seat
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Edit</h1>
+<h1>Create</h1>
 
-<h4>Place</h4>
+<h4>Seats</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="PlaceId" />
             <div class="form-group">
-                <label asp-for="RowNumber" class="control-label"></label>
-                <input asp-for="RowNumber" class="form-control" />
-                <span asp-validation-for="RowNumber" class="text-danger"></span>
+                <label asp-for="Row" class="control-label"></label>
+                <input asp-for="Row" class="form-control" />
+                <span asp-validation-for="Row" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PlaceNumber" class="control-label"></label>
-                <input asp-for="PlaceNumber" class="form-control" />
-                <span asp-validation-for="PlaceNumber" class="text-danger"></span>
+                <label asp-for="Column" class="control-label"></label>
+                <input asp-for="Column" class="form-control" />
+                <span asp-validation-for="Column" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="HallId" class="control-label"></label>
                 <select asp-for="HallId" class="form-control" asp-items="@(new SelectList(ViewBag.Halls, nameof(Hall.Id), nameof(Hall.Name)))"><option>Please select one</option></select>
-                <span asp-validation-for="HallId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

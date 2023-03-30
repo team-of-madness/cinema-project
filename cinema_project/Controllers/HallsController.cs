@@ -56,7 +56,7 @@ namespace cinema_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,RowNumber,RowPlaces")] Hall hall)
+        public async Task<IActionResult> Create([Bind("Id,Name,Rows,Columns")] Hall hall)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace cinema_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,RowNumber,RowPlaces")] Hall hall)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Rows,Columns")] Hall hall)
         {
             if (id != hall.Id)
             {

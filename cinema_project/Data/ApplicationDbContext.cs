@@ -17,7 +17,7 @@ namespace cinema_project.Data
 
         public DbSet<Hall> Halls { get; set; }
 
-        public DbSet<Place> Places { get; set; }
+        public DbSet<Seat> Seats { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -51,12 +51,12 @@ namespace cinema_project.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Hall>()
-                .HasMany<Place>(hall => hall.Places)
-                .WithOne(place => place.Hall)
-                .HasForeignKey(place => place.HallId);
+                .HasMany<Seat>(hall => hall.Seats)
+                .WithOne(seat => seat.Hall)
+                .HasForeignKey(seat => seat.HallId);
 
             builder.Entity<Ticket>()
-                .HasOne(t => t.Place)
+                .HasOne(t => t.Seat)
                 .WithMany(p => p.Tickets)
                 .HasForeignKey(t => t.PlaceId)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -67,9 +67,9 @@ namespace cinema_project.Data
                 .HasForeignKey(t => t.SessionId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Place>()
+            builder.Entity<Seat>()
                 .HasMany(p => p.Tickets)
-                .WithOne(t => t.Place)
+                .WithOne(t => t.Seat)
                 .HasForeignKey(t => t.PlaceId)
                 .OnDelete(DeleteBehavior.Restrict);
         }

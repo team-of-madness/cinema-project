@@ -1,4 +1,4 @@
-﻿@model cinema_project.Models.Place
+﻿@model cinema_project.Models.Seat
 
 @{
     ViewData["Title"] = "Details";
@@ -11,16 +11,16 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RowNumber)
+            @Html.DisplayNameFor(model => model.Row)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RowNumber)
+            @Html.DisplayFor(model => model.Row)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PlaceNumber)
+            @Html.DisplayNameFor(model => model.Column)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PlaceNumber)
+            @Html.DisplayFor(model => model.Column)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Hall)
@@ -31,6 +31,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.PlaceId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

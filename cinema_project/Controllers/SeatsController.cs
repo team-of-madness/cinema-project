@@ -10,33 +10,33 @@ using cinema_project.Models;
 
 namespace cinema_project.Controllers
 {
-    public class PlacesController : Controller
+    public class SeatsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PlacesController(ApplicationDbContext context)
+        public SeatsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Places
+        // GET: Seats
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Places.Include(p => p.Hall);
+            var applicationDbContext = _context.Seats.Include(p => p.Hall);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Places/Details/5
+        // GET: Seats/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Places == null)
+            if (id == null || _context.Seats == null)
             {
                 return NotFound();
             }
 
-            var place = await _context.Places
+            var place = await _context.Seats
                 .Include(p => p.Hall)
-                .FirstOrDefaultAsync(m => m.PlaceId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (place == null)
             {
                 return NotFound();
@@ -45,7 +45,7 @@ namespace cinema_project.Controllers
             return View(place);
         }
 
-        // GET: Places/Create
+        // GET: Seats/Create
         public IActionResult Create()
         {
             ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id");
@@ -54,70 +54,70 @@ namespace cinema_project.Controllers
             return View();
         }
 
-        // POST: Places/Create
+        // POST: Seats/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PlaceId,RowNumber,PlaceNumber,HallId")] Place place)
+        public async Task<IActionResult> Create([Bind("Id,Row,Column,HallId")] Seat seat)
         {
             if (ModelState.IsValid)
             {
-                ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", place.HallId);
-                return View(place);
+                ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", seat.HallId);
+                return View(seat);
             }
 
-            _context.Add(place);
+            _context.Add(seat);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Places/Edit/5
+        // GET: Seats/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Places == null)
+            if (id == null || _context.Seats == null)
             {
                 return NotFound();
             }
 
-            var place = await _context.Places.FindAsync(id);
-            if (place == null)
+            var seat = await _context.Seats.FindAsync(id);
+            if (seat == null)
             {
                 return NotFound();
             }
-            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", place.HallId);
+            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", seat.HallId);
             IEnumerable<Hall> halls = _context.Halls;
             ViewBag.Halls = halls;
 
-            return View(place);
+            return View(seat);
         }
 
-        // POST: Places/Edit/5
+        // POST: Seats/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PlaceId,RowNumber,PlaceNumber,HallId")] Place place)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Row,Column,HallId")] Seat seat)
         {
-            if (id != place.PlaceId)
+            if (id != seat.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", place.HallId);
-                return View(place);
+                ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", seat.HallId);
+                return View(seat);
             }
 
             try
             {
-                _context.Update(place);
+                _context.Update(seat);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PlaceExists(place.PlaceId))
+                if (!PlaceExists(seat.Id))
                 {
                     return NotFound();
                 }
@@ -129,38 +129,38 @@ namespace cinema_project.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Places/Delete/5
+        // GET: Seats/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Places == null)
+            if (id == null || _context.Seats == null)
             {
                 return NotFound();
             }
 
-            var place = await _context.Places
+            var seat = await _context.Seats
                 .Include(p => p.Hall)
-                .FirstOrDefaultAsync(m => m.PlaceId == id);
-            if (place == null)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (seat == null)
             {
                 return NotFound();
             }
 
-            return View(place);
+            return View(seat);
         }
 
-        // POST: Places/Delete/5
+        // POST: Seats/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Places == null)
+            if (_context.Seats == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Places'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Seats'  is null.");
             }
-            var place = await _context.Places.FindAsync(id);
-            if (place != null)
+            var seat = await _context.Seats.FindAsync(id);
+            if (seat != null)
             {
-                _context.Places.Remove(place);
+                _context.Seats.Remove(seat);
             }
             
             await _context.SaveChangesAsync();
@@ -169,7 +169,7 @@ namespace cinema_project.Controllers
 
         private bool PlaceExists(int id)
         {
-          return (_context.Places?.Any(e => e.PlaceId == id)).GetValueOrDefault();
+          return (_context.Seats?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace cinema_project.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tickets.Include(t => t.Place).Include(t => t.Session);
+            var applicationDbContext = _context.Tickets.Include(t => t.Seat).Include(t => t.Session);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace cinema_project.Controllers
             }
 
             var ticket = await _context.Tickets
-                .Include(t => t.Place)
+                .Include(t => t.Seat)
                 .Include(t => t.Session)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
@@ -49,7 +49,7 @@ namespace cinema_project.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
-            ViewData["PlaceId"] = new SelectList(_context.Places, "PlaceId", "PlaceId");
+            ViewData["PlaceId"] = new SelectList(_context.Seats, "Id", "Id");
             ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id");
             return View();
         }
@@ -64,7 +64,7 @@ namespace cinema_project.Controllers
 
             if (ModelState.IsValid)
             {
-                ViewData["PlaceId"] = new SelectList(_context.Places, "PlaceId", "PlaceId", ticket.PlaceId);
+                ViewData["PlaceId"] = new SelectList(_context.Seats, "Id", "Id", ticket.PlaceId);
                 ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id", ticket.SessionId);
                 return View(ticket);
             }
@@ -87,7 +87,7 @@ namespace cinema_project.Controllers
             {
                 return NotFound();
             }
-            ViewData["PlaceId"] = new SelectList(_context.Places, "PlaceId", "PlaceId", ticket.PlaceId);
+            ViewData["PlaceId"] = new SelectList(_context.Seats, "Id", "Id", ticket.PlaceId);
             ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id", ticket.SessionId);
             return View(ticket);
         }
@@ -106,7 +106,7 @@ namespace cinema_project.Controllers
 
             if (ModelState.IsValid)
             {
-                ViewData["PlaceId"] = new SelectList(_context.Places, "PlaceId", "PlaceId", ticket.PlaceId);
+                ViewData["PlaceId"] = new SelectList(_context.Seats, "Id", "Id", ticket.PlaceId);
                 ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id", ticket.SessionId);
                 return View(ticket);
             }
@@ -139,7 +139,7 @@ namespace cinema_project.Controllers
             }
 
             var ticket = await _context.Tickets
-                .Include(t => t.Place)
+                .Include(t => t.Seat)
                 .Include(t => t.Session)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)

@@ -1,10 +1,10 @@
-﻿@model IEnumerable<cinema_project.Models.Hall>
+﻿@model IEnumerable<cinema_project.Models.Seat>
 
 @{
-    ViewData["Title"] = "Halls";
+    ViewData["Title"] = "Seats";
 }
 
-<h1>Index</h1>
+<h1>Seats</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,13 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Row)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rows)
+                @Html.DisplayNameFor(model => model.Column)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Columns)
+                @Html.DisplayNameFor(model => model.Hall)
             </th>
             <th></th>
         </tr>
@@ -28,13 +28,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.Row)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Rows)
+                    @Html.DisplayFor(modelItem => item.Column)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Columns)
+                    @Html.DisplayFor(modelItem => item.Hall.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

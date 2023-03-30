@@ -6,12 +6,12 @@
 
         public string Name { get; set; }
 
-        public int RowNumber { get; set; }
+        public int Rows { get; set; }
 
-        public int RowPlaces { get; set; }
+        public int Columns { get; set; }
 
         public List<Session> Sessions { get; set; }
 
-        public List<Place> Places { get; set; }
+        public List<Seat> Seats { get; set; }
     }
 }
