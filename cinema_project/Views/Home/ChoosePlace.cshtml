@@ -2,46 +2,44 @@
 
 @{
     ViewData["Title"] = "Seats";
+    int Rows = 4; // верніть сюда кількість рядків у холі
+    int Cols = 8; // верніть сюда кількість колонок у холі
+    int usefull_var = 0;
 }
 
-<h1>Seats</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Choose one seat</h1>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Row)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Column)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hall)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
     <tbody>
-@foreach (var item in Model) {
         <tr>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Row)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Column)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Hall.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            <div style="width:900px;border: 12px solid #CAF9FF; margin: 0px 0px 3% 15%"> </div>
         </tr>
-}
+        @for (int row = 0; row < Rows; row++)
+        {
+            <tr>
+                <th>
+                    <div>
+                        @{
+                            usefull_var = row + 1;
+                        }
+                        @usefull_var row
+                    </div>
+                </th>
+                @for (int col = 0; col < Cols; col++)
+                {
+                    <td>
+                        <a asp-action="ChoosePlace"> @* залишіть тут лінк на купівлю квитка чи що*@
+                            <div style="height:100px; width:100px; border: 5px solid #611B0C; display: inline-block;">
+                                <div style="display: flex; justify-content: center;">
+                                    @{
+                                        usefull_var = col + 1;
+                                    }
+                                    @usefull_var
+                                </div>
+                            </div>
+                        </a>
+                    </td>
+                }
+            </tr>
+        }
     </tbody>
 </table>
