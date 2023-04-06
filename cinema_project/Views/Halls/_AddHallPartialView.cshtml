@@ -1,0 +1,37 @@
+﻿@model Hall
+@{
+    ViewData["Title"] = "_AddHallPartialView";
+    var isCreate = Model.Id == 0;
+}
+
+<div class="modal fade" role="dialog" tabindex="-1" id="addHall" aria-labelledby="addHallLable" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content" style="background-color:lightblue !important;">
+            <div class="modal-header"><h3>Hall</h3></div>
+            <div class="modal-body">
+                <form asp-action="CreateOrEdit">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Rows" class="control-label"></label>
+                        <input asp-for="Rows" class="form-control" />
+                        <span asp-validation-for="Rows" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Columns" class="control-label"></label>
+                        <input asp-for="Columns" class="form-control" />
+                        <span asp-validation-for="Columns" class="text-danger"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="@(isCreate?"Create":"Edit")" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+﻿@model Seat
+@{
+    ViewData["Title"] = "_AddSeatPartialView";
+    var isCreate = Model.Id == 0;
+}
+
+<div class="modal fade" role="dialog" tabindex="-1" id="addSeat" aria-labelledby="addSeatLable" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content" style="background-color:lightblue !important;">
+            <div class="modal-header"><h3>Seat</h3></div>
+            <div class="modal-body">
+                <form asp-action="CreateOrEdit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group">
+                        <label asp-for="Row" class="control-label"></label>
+                        <input asp-for="Row" class="form-control" />
+                        <span asp-validation-for="Row" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Column" class="control-label"></label>
+                        <input asp-for="Column" class="form-control" />
+                        <span asp-validation-for="Column" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="HallId" class="control-label"></label>
+                        <select asp-for="HallId" class="form-control" asp-items="@(new SelectList(ViewBag.Halls, nameof(Hall.Id), nameof(Hall.Name)))"><option>Please select one</option></select>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="@(isCreate?"Create":"Edit")" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

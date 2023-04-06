@@ -22,8 +22,47 @@ namespace cinema_project.Controllers
         // GET: Seats
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Seats.Include(p => p.Hall);
-            return View(await applicationDbContext.ToListAsync());
+            var seats = await _context.Seats.Include(p => p.Hall).ToListAsync();
+            return View(seats);
+        }
+        // GET: Seats/CreateOrEdit
+        public async Task<IActionResult> CreateOrEdit(int? id = null)
+        {
+            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id");
+            IEnumerable<Hall> halls = _context.Halls;
+            ViewBag.Halls = halls;
+
+            Seat? seat = null;
+            if (id == null)
+            {
+                seat = new Seat();
+            }
+            else
+            {
+                seat = await _context.Seats.FindAsync(id);
+                if (seat == null)
+                {
+                    return NotFound();
+                }
+            }
+            return PartialView("_AddSeatPartialView", seat);
+        }
+        // POST: Seats/CreateOrEdit
+        
+        [HttpPost]
+        public async Task<IActionResult> CreateOrEdit(Seat seat)
+        {
+            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", seat.HallId);
+            if (seat.Id == 0)
+            {
+                _context.Add(seat);
+            }
+            else
+            {
+                _context.Update(seat);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         // GET: Seats/Details/5
@@ -43,90 +82,6 @@ namespace cinema_project.Controllers
             }
 
             return View(place);
-        }
-
-        // GET: Seats/CreateOrEdit
-        public IActionResult Create()
-        {
-            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id");
-            IEnumerable<Hall> halls = _context.Halls;
-            ViewBag.Halls = halls;
-            return View();
-        }
-
-        // POST: Seats/CreateOrEdit
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Row,Column,HallId")] Seat seat)
-        {
-            if (ModelState.IsValid)
-            {
-                ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", seat.HallId);
-                return View(seat);
-            }
-
-            _context.Add(seat);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        // GET: Seats/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Seats == null)
-            {
-                return NotFound();
-            }
-
-            var seat = await _context.Seats.FindAsync(id);
-            if (seat == null)
-            {
-                return NotFound();
-            }
-            ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", seat.HallId);
-            IEnumerable<Hall> halls = _context.Halls;
-            ViewBag.Halls = halls;
-
-            return View(seat);
-        }
-
-        // POST: Seats/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Row,Column,HallId")] Seat seat)
-        {
-            if (id != seat.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", seat.HallId);
-                return View(seat);
-            }
-
-            try
-            {
-                _context.Update(seat);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlaceExists(seat.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return RedirectToAction(nameof(Index));
         }
 
         // GET: Seats/Delete/5

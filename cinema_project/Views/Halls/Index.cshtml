@@ -6,9 +6,12 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addHall" onclick="addHall()">
+    Add Hall
+</button>
+
+<div id="hallTable"></div>
+
 <table class="table">
     <thead>
         <tr>
@@ -37,7 +40,9 @@
                 @Html.DisplayFor(modelItem => item.Columns)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addHall" onclick="addHall(@item.Id)">
+                        Edit
+                    </button> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
@@ -45,3 +50,16 @@
 }
     </tbody>
 </table>
+
+<script>
+    function addHall(id) {
+        $.ajax({
+            type: "Get",
+            url: "/Halls/CreateOrEdit" + (id ? "?id=" + id : ""),
+            success: function (result) {
+                $("#hallTable").html(result);
+                $("#addHall").modal('show');
+            }
+        });
+    }
+</script>

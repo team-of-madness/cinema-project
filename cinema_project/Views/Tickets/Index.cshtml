@@ -1,14 +1,17 @@
 ﻿@model IEnumerable<cinema_project.Models.Ticket>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Tickets";
 }
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addTicket" onclick="addTicket()">
+    Add Ticket
+</button>
+
+<div id="ticketTable"></div>
+
 <table class="table">
     <thead>
         <tr>
@@ -37,7 +40,9 @@
                 @Html.DisplayFor(modelItem => item.Session.Id)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addTicket" onclick="addTicket(@item.Id)">
+                    Edit
+                </button> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
@@ -45,3 +50,16 @@
 }
     </tbody>
 </table>
+
+<script>
+    function addTicket(id) {
+        $.ajax({
+            type: "Get",
+            url: "/Tickets/CreateOrEdit" + (id ? "?id=" + id : ""),
+            success: function (result) {
+                $("#ticketTable").html(result);
+                $("#addTicket").modal('show');
+            }
+        });
+    }
+</script>
