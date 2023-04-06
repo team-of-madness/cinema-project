@@ -45,13 +45,13 @@ namespace cinema_project.Controllers
             return View(hall);
         }
 
-        // GET: Halls/Create
+        // GET: Halls/CreateOrEdit
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Halls/Create
+        // POST: Halls/CreateOrEdit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]

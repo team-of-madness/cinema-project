@@ -45,7 +45,7 @@ namespace cinema_project.Controllers
             return View(place);
         }
 
-        // GET: Seats/Create
+        // GET: Seats/CreateOrEdit
         public IActionResult Create()
         {
             ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id");
@@ -54,7 +54,7 @@ namespace cinema_project.Controllers
             return View();
         }
 
-        // POST: Seats/Create
+        // POST: Seats/CreateOrEdit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]

@@ -7,11 +7,11 @@
 <h1>Index</h1>
 
 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addMovie" onclick="addMovie()">
-    Create New
+    Add Movie
 </button>
 
-
-<table class="table" id="movieTable">
+<div id="movieTable"></div>
+<table class="table" >
     <thead>
         <tr>
             <th>
@@ -57,7 +57,9 @@
                 @Html.DisplayFor(modelItem => item.Genre.GenreName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addMovie" onclick="addMovie(@item.Id)">
+                        Edit
+                    </button> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
@@ -67,14 +69,14 @@
 </table>
 
 <script>
-    function addMovie() {
-        $.ajax{{
+    function addMovie(id) {
+        $.ajax({
             type: "Get",
-            url: "/Movies/Create",
+            url: "/Movies/CreateOrEdit" + (id? "?id=" + id: ""),
             success: function (result) {
-                $("movieTable").html(result);
+                $("#movieTable").html(result);
                 $("#addMovie").modal('show');
             }
-        }}
+        });
     }
 </script>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using cinema_project.Data;
@@ -20,42 +16,51 @@ namespace cinema_project.Controllers
         }
 
         // GET: Movies
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<Movie> movies = _context.Movies.Include(m => m.Genre).ToList();
+            var movies = await _context.Movies.Include(m => m.Genre).ToListAsync();
             return View(movies);
         }
 
-        // GET: Movies/Create
-        public IActionResult Create()
+        // GET: Movies/CreateOrEdit
+        public async Task<IActionResult> CreateOrEdit(int? id = null)
         {
-
-            //ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id");
-            //IEnumerable<Genre> genres = _context.Genre;
-            //ViewBag.Genre = genres;
-
-            Movie movie = new Movie();
+            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id");
+            IEnumerable<Genre> genres = _context.Genre;
+            ViewBag.Genre = genres;
             
-            return PartialView("_AddMoviesParialView", movie);
+            Movie? movie = null;
+            if(id == null)
+            {
+                movie = new Movie();
+            }
+            else
+            {
+                movie = await _context.Movies.FindAsync(id);
+                if (movie == null)
+                {
+                    return NotFound();
+                }
+            }
+            return PartialView("_AddMoviesPartialView", movie);
         }
 
-        // POST: Movies/Create
+        // POST: Movies/CreateOrEdit
         [HttpPost]
-        public IActionResult Create(Movie movie)
+        public async Task<IActionResult> CreateOrEdit(Movie movie)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
-            //    return View(movie);
-            //}
             ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
-            _context.Movies.Add(movie);
-            _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if(movie.Id == 0)
+            {
+                _context.Add(movie);
+            }
+            else
+            {
+                _context.Update(movie);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
-
-
-
 
         // GET: Movies/Details/5
         public  async Task<IActionResult> Details(int? id)
@@ -75,67 +80,6 @@ namespace cinema_project.Controllers
 
             return View(movie);
         }
-
-       
-
-        
-
-        // GET: Movies/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Movies == null)
-            {
-                return NotFound();
-            }
-
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
-            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
-            IEnumerable<Genre> genres = _context.Genre;
-            ViewBag.Genre = genres;
-            return View(movie);
-        }
-
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Duration,MinAge,Producer,GenreId")] Movie movie)
-        {
-            if (id != movie.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
-                return View(movie);
-            }
-
-            try
-            {
-                _context.Update(movie);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MovieExists(movie.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return RedirectToAction(nameof(Index));
-        }
-
         // GET: Movies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

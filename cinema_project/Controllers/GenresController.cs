@@ -44,13 +44,13 @@ namespace cinema_project.Controllers
             return View(genre);
         }
 
-        // GET: Genres/Create
+        // GET: Genres/CreateOrEdit
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Genres/Create
+        // POST: Genres/CreateOrEdit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
