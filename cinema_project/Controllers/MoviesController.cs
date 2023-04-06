@@ -20,14 +20,45 @@ namespace cinema_project.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.Movies.Include(m => m.Genre);
-            return View(await applicationDbContext.ToListAsync());
+            List<Movie> movies = _context.Movies.Include(m => m.Genre).ToList();
+            return View(movies);
         }
 
+        // GET: Movies/Create
+        public IActionResult Create()
+        {
+
+            //ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id");
+            //IEnumerable<Genre> genres = _context.Genre;
+            //ViewBag.Genre = genres;
+
+            Movie movie = new Movie();
+            
+            return PartialView("_AddMoviesParialView", movie);
+        }
+
+        // POST: Movies/Create
+        [HttpPost]
+        public IActionResult Create(Movie movie)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //    ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
+            //    return View(movie);
+            //}
+            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
+            _context.Movies.Add(movie);
+            _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+
         // GET: Movies/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public  async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Movies == null)
             {
@@ -45,32 +76,9 @@ namespace cinema_project.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Create
-        public IActionResult Create()
-        {
-            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id");
-            IEnumerable<Genre> genres = _context.Genre;
-            ViewBag.Genre = genres;
-            return View();
-        }
+       
 
-        // POST: Movies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Duration,MinAge,Producer,GenreId")] Movie movie)
-        {
-            if (ModelState.IsValid)
-            {
-                ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
-                return View(movie);
-            }
-
-            _context.Add(movie);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        
 
         // GET: Movies/Edit/5
         public async Task<IActionResult> Edit(int? id)

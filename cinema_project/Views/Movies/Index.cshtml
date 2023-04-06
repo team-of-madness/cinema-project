@@ -6,10 +6,12 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addMovie" onclick="addMovie()">
+    Create New
+</button>
+
+
+<table class="table" id="movieTable">
     <thead>
         <tr>
             <th>
@@ -63,3 +65,16 @@
 }
     </tbody>
 </table>
+
+<script>
+    function addMovie() {
+        $.ajax{{
+            type: "Get",
+            url: "/Movies/Create",
+            success: function (result) {
+                $("movieTable").html(result);
+                $("#addMovie").modal('show');
+            }
+        }}
+    }
+</script>

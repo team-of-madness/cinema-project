@@ -1,14 +1,10 @@
-﻿@model cinema_project.Models.Movie
+﻿@model Movie
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "_AddMoviePartialView";
 }
 
-<h1>Create</h1>
-
-<h4>Movie</h4>
-<hr />
-<div class="row">
+<div class="modal row" aria-hidden="true" id="addMovie" aria-hidden="true">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -48,10 +44,3 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

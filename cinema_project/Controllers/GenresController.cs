@@ -19,7 +19,6 @@ namespace cinema_project.Controllers
             _context = context;
         }
 
-        // GET: Genres
         public async Task<IActionResult> Index()
         {
               return _context.Genre != null ? 
