@@ -67,7 +67,7 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
 
-            return View(genre);
+            return PartialView("_GenreDetailPartialView", genre);
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -84,7 +84,7 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
 
-            return View(genre);
+            return PartialView("_DeleteGenrePartialView", genre);
         }
 
         [HttpPost, ActionName("Delete")]

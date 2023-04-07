@@ -1,0 +1,26 @@
+﻿@model cinema_project.Models.Genre
+
+@{
+    ViewData["Title"] = "_GenreDetailPartialView";
+}
+
+
+<div class="modal fade" role="dialog" tabindex="-1" id="genreDetails" aria-labelledby="genreDetailsLable" aria-hidden="true">
+    <div class="modal-dialog" modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content" style="background-color:lightblue !important;">
+            <div class="modal-header">
+                <h3>Delete Genre</h3>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.GenreName)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.GenreName)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

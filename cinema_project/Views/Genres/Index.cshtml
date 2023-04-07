@@ -11,6 +11,8 @@
 </button>
 
 <div id="genreTable"></div>
+<div id="deleteTable"></div>
+<div id="detailsTable"></div>
 <table class="table">
     <thead>
         <tr>
@@ -21,20 +23,27 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GenreName)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GenreName)
+                </td>
+                <td>
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addGenre" onclick="addGenre(@item.Id)">
                         Edit
                     </button> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#genreDetails" onclick="genreDetails(@item.Id)">
+                        Details
+                    </button> |
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteGenre" onclick="deleteGenre(@item.Id)">
+                        Delete
+                    </button>
+                    @await Html.PartialAsync("_DeleteGenrePartialView", item)
+                    |
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
@@ -42,11 +51,35 @@
     function addGenre(id) {
         $.ajax({
             type: "Get",
-            url: "/Genres/CreateOrEdit" + (id? "?id=" + id: ""),
+            url: "/Genres/CreateOrEdit" + (id ? "?id=" + id : ""),
             success: function (result) {
                 $("#genreTable").html(result);
                 $("#addGenre").modal('show');
             }
         });
     }
+
+    function genreDetails(id) {
+        $.ajax({
+            type: "Get",
+            url: "/Genres/Details" + (id ? "?id=" + id : ""),
+            success: function (result) {
+                $("#detailsTable").html(result);
+                $("#genreDetails").modal('show');
+            }
+        });
+    }
+
+    function deleteGenre(id) {
+        $.ajax({
+            type: "Get",
+            url: "/Genres/Delete" + (id ? "?id=" + id : ""),
+            success: function (result) {
+                $("#deleteTable").html(result);
+                $("#deleteGenre").modal('show');
+            }
+        });
+    }
+
+
 </script>
