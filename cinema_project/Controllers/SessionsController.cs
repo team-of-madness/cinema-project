@@ -80,7 +80,7 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
 
-            return View(session);
+            return PartialView("_SessionDetailPartialView",session);
         }
 
         // GET: Sessions/Delete/5
@@ -100,7 +100,7 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
 
-            return View(session);
+            return PartialView("_DeleteSessionPartialView", session);
         }
 
         // POST: Sessions/Delete/5

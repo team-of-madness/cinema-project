@@ -11,7 +11,8 @@
 </button>
 
 <div id="movieTable"></div>
-
+<div id="deleteTable"></div>
+<div id="detailsTable"></div>
 <table class="table">
     <thead>
         <tr>
@@ -62,8 +63,12 @@
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addMovie" onclick="addMovie(@item.Id)">
                         Edit
                     </button> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#movieDetails" onclick="movieDetails(@item.Id)">
+                        Details
+                    </button> |
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteMovie" onclick="deleteMovie(@item.Id)">
+                        Delete
+                    </button>
                 </td>
             </tr>
         }
@@ -78,6 +83,28 @@
             success: function (result) {
                 $("#movieTable").html(result);
                 $("#addMovie").modal('show');
+            }
+        });
+    }
+
+    function movieDetails(id) {
+        $.ajax({
+            type: "Get",
+            url: "/Movies/Details" + (id ? "?id=" + id : ""),
+            success: function (result) {
+                $("#detailsTable").html(result);
+                $("#movieDetails").modal('show');
+            }
+        });
+    }
+
+    function deleteMovie(id) {
+        $.ajax({
+            type: "Get",
+            url: "/Movies/Delete" + (id ? "?id=" + id : ""),
+            success: function (result) {
+                $("#deleteTable").html(result);
+                $("#deleteMovie").modal('show');
             }
         });
     }

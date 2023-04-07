@@ -70,7 +70,7 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
 
-            return View(hall);
+            return PartialView("_HallDetailPartialView", hall);
         }
 
         // GET: Halls/Delete/5
@@ -88,7 +88,7 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
 
-            return View(hall);
+            return PartialView("_DeleteHallPartialView", hall);
         }
 
         // POST: Halls/Delete/5

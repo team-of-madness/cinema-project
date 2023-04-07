@@ -11,6 +11,8 @@
 </button>
 
 <div id="sessionTable"></div>
+<div id="deleteTable"></div>
+<div id="detailsTable"></div>
 <table class="table">
     <thead>
         <tr>
@@ -49,8 +51,12 @@
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addSession" onclick="addSession(@item.Id)">
                         Edit
                     </button> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#sessionDetails" onclick="sessionDetails(@item.Id)">
+                        Details
+                    </button> |
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteSession" onclick="deleteSession(@item.Id)">
+                        Delete
+                    </button>
                 </td>
             </tr>
         }
@@ -65,6 +71,26 @@
             success: function (result) {
                 $("#sessionTable").html(result);
                 $("#addSession").modal('show');
+            }
+        });
+    }
+    function sessionDetails(id) {
+        $.ajax({
+            type: "Get",
+            url: "/Sessions/Details" + (id ? "?id=" + id : ""),
+            success: function (result) {
+                $("#detailsTable").html(result);
+                $("#sessionDetails").modal('show');
+            }
+        });
+    }
+    function deleteSession(id) {
+        $.ajax({
+            type: "Get",
+            url: "/Sessions/Delete" + (id ? "?id=" + id : ""),
+            success: function (result) {
+                $("#deleteTable").html(result);
+                $("#deleteSession").modal('show');
             }
         });
     }

@@ -1,0 +1,38 @@
+﻿@model cinema_project.Models.Hall
+
+@{
+    ViewData["Title"] = "_HallDetailPartialView";
+}
+
+
+<div class="modal fade" role="dialog" tabindex="-1" id="hallDetails" aria-labelledby="hallDetailsLable" aria-hidden="true">
+    <div class="modal-dialog" modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content" style="background-color:lightblue !important;">
+            <div class="modal-header">
+                <h3>Hall Details</h3>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Rows)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Rows)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Columns)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Columns)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
