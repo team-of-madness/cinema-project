@@ -4,13 +4,15 @@
     ViewData["Title"] = "Tickets";
 }
 
-<h1>Index</h1>
+<h1>Tickets</h1>
 
 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addTicket" onclick="addTicket()">
     Add Ticket
 </button>
 
 <div id="ticketTable"></div>
+<div id="deleteTable"></div>
+<div id="detailsTable"></div>
 
 <table class="table">
     <thead>
@@ -28,26 +30,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seat.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Session.Id)
-            </td>
-            <td>
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addTicket" onclick="addTicket(@item.Id)">
-                    Edit
-                </button> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Seat.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Id)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addTicket" onclick="addTicket(@item.Id)">
+                        Edit
+                    </button> |
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#ticketDetails" onclick="ticketDetails(@item.Id)">
+                        Details
+                    </button> |
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteTicket" onclick="deleteTicket(@item.Id)">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
@@ -59,6 +66,28 @@
             success: function (result) {
                 $("#ticketTable").html(result);
                 $("#addTicket").modal('show');
+            }
+        });
+    }
+
+    function ticketDetails(id) {
+        $.ajax({
+            type: "Get",
+            url: "/Tickets/Details" + (id ? "?id=" + id : ""),
+            success: function (result) {
+                $("#detailsTable").html(result);
+                $("#ticketDetails").modal('show');
+            }
+        });
+    }
+
+    function deleteTicket(id) {
+        $.ajax({
+            type: "Get",
+            url: "/Tickets/Delete" + (id ? "?id=" + id : ""),
+            success: function (result) {
+                $("#deleteTable").html(result);
+                $("#deleteTicket").modal('show');
             }
         });
     }

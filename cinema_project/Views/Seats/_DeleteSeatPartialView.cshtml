@@ -1,33 +1,33 @@
-﻿@model cinema_project.Models.Hall
+﻿@model cinema_project.Models.Seat
 
 @{
-    ViewData["Title"] = "_DeleteHallPartialView";
+    ViewData["Title"] = "_DeleteSeatPartialView";
 }
 
-<div class="modal fade" role="dialog" tabindex="-1" id="deleteHall" aria-labelledby="DeleteHallLable" aria-hidden="true">
+<div class="modal fade" role="dialog" tabindex="-1" id="deleteSeat" aria-labelledby="DeleteSeatLable" aria-hidden="true">
     <div class="modal-dialog" modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content" style="background-color:lightblue !important;">
-            <div class="modal-header"><h3>Delete Hall</h3></div>
+            <div class="modal-header"><h3>Delete Seat</h3></div>
             <div class="modal-body">
                 <h4>Are you sure you want to delete this item?</h4>
                 <dl class="row">
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Name)
+                        @Html.DisplayNameFor(model => model.Row)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Name)
+                        @Html.DisplayFor(model => model.Row)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Rows)
+                        @Html.DisplayNameFor(model => model.Column)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Rows)
+                        @Html.DisplayFor(model => model.Column)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Columns)
+                        @Html.DisplayNameFor(model => model.Hall)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Columns)
+                        @Html.DisplayFor(model => model.Hall.Id)
                     </dd>
                 </dl>
                 <form asp-action="Delete" method="post">

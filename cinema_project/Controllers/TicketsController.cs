@@ -77,7 +77,7 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
 
-            return View(ticket);
+            return PartialView("_TicketDetailPartialView", ticket);
         }
         
         // GET: Tickets/Delete/5
@@ -97,7 +97,7 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
 
-            return View(ticket);
+            return PartialView("_DeleteTicketPartialView", ticket);
         }
 
         // POST: Tickets/Delete/5

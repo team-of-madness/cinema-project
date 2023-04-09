@@ -81,7 +81,7 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
 
-            return View(place);
+            return PartialView("_SeatDetailPartialView", place);
         }
 
         // GET: Seats/Delete/5
@@ -100,7 +100,7 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
 
-            return View(seat);
+            return PartialView("_DeleteSeatPartialView", seat);
         }
 
         // POST: Seats/Delete/5
