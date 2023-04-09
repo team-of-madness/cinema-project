@@ -3,6 +3,8 @@ using cinema_project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Linq;
+using System.Net.Sockets;
 
 namespace cinema_project.Controllers
 {
@@ -57,8 +59,18 @@ namespace cinema_project.Controllers
         public async Task<IActionResult> ChoosePlace(int? Id)
         {
             //Incorrect logic. Required to fix
-            var seats_dbContext = _dbContext.Seats.Include(h => h.Hall);
+            int sessionID = _dbContext.Sessions.FindAsync(Id).Result.HallId;
+            var seats_dbContext = _dbContext.Seats.Include(h => h.Hall).Where(item => item.Hall.Id == sessionID);
             return View(await seats_dbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> BuyTicket(int row, int column)
+        {
+            // Code to search for products based on the query and category parameters
+            // ...
+            Seat seat = new Seat { Id = 100, Row = row, Column = column, HallId = 1 };
+            // Return the search results to a view
+            return PartialView("_BuyTicket", seat);
         }
 
         public IActionResult Privacy()

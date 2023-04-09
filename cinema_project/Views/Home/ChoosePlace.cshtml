@@ -2,11 +2,13 @@
 
 @{
     ViewData["Title"] = "Seats";
-    int Rows = 5; // верніть сюда кількість рядків у холі
-    int Cols = 7; // верніть сюда кількість колонок у холі
+    var list = Model.ToList();
+    int Rows = list[0].Hall.Rows; // верніть сюда кількість рядків у холі
+    int Cols = list[0].Hall.Columns; // верніть сюда кількість колонок у холі
     int usefull_var = 0;
-}
 
+}
+<div id="ticketPre"></div>
 <h1>Choose one seat</h1>
 <table class="table">
     <tbody>
@@ -27,7 +29,11 @@
                 @for (int col = 0; col < Cols; col++)
                 {
                     <td>
-                        <a asp-action="ChoosePlace"> @* залишіть тут лінк на купівлю квитка чи що*@
+                        <a asp-controller="Home" asp-action="BuyTicket" asp-route="@{
+                    var dict = new Dictionary<string, object>();
+                        dict.Add("row", row);
+                        dict.Add("column", col);
+                    }@dict">
                             <div style="height:100px; width:100px; border: 5px solid #611B0C; display: inline-block;">
                                 <div style="display: flex; justify-content: center;">
                                     @{
@@ -43,3 +49,5 @@
         }
     </tbody>
 </table>
+
+
