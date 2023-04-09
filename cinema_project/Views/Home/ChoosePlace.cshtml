@@ -3,19 +3,20 @@
 @{
     ViewData["Title"] = "Seats";
     var list = Model.ToList();
-    int Rows = list[0].Hall.Rows; // верніть сюда кількість рядків у холі
-    int Cols = list[0].Hall.Columns; // верніть сюда кількість колонок у холі
+    int rows = list[0].Hall.Rows;
+    int cols = list[0].Hall.Columns;
+    int hallId = list[0].HallId;
     int usefull_var = 0;
 
 }
-<div id="ticketPre"></div>
+<div id="ticketOrder"></div>
 <h1>Choose one seat</h1>
 <table class="table">
     <tbody>
         <tr>
             <div style="width:900px;border: 12px solid #CAF9FF; margin: 0px 0px 3% 15%"> </div>
         </tr>
-        @for (int row = 0; row < Rows; row++)
+        @for (int row = 0; row < rows; row++)
         {
             <tr>
                 <th>
@@ -26,14 +27,14 @@
                         @usefull_var row
                     </div>
                 </th>
-                @for (int col = 0; col < Cols; col++)
+                @for (int col = 0; col < cols; col++)
                 {
                     <td>
-                        <a asp-controller="Home" asp-action="BuyTicket" asp-route="@{
-                    var dict = new Dictionary<string, object>();
-                        dict.Add("row", row);
-                        dict.Add("column", col);
-                    }@dict">
+                        @*@{
+                            var parms = new Dictionary<string, string> { { "row", row.ToString() }, { "column", col.ToString() }, { "hallId", hallId.ToString()} };
+                        }
+                        <a asp-action="BuyTicket" asp-all-route-data="parms">*@
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#buyTicket" onclick="buyTicket(@row,@col,@hallId)">
                             <div style="height:100px; width:100px; border: 5px solid #611B0C; display: inline-block;">
                                 <div style="display: flex; justify-content: center;">
                                     @{
@@ -42,7 +43,8 @@
                                     @usefull_var
                                 </div>
                             </div>
-                        </a>
+                            </button>
+                        @*</a>*@
                     </td>
                 }
             </tr>
@@ -51,3 +53,15 @@
 </table>
 
 
+<script>
+    function buyTicket(row,column,hallId) {
+        $.ajax({
+            type: "Get",
+            url: "/Home/BuyTicket?row=" + row + "&column=" + column + "&hallId=" + hallId,
+            success: function (result) {
+                $("#ticketOrder").html(result);
+                $("#buyTicket").modal('show');
+            }
+        });
+    }
+</script>

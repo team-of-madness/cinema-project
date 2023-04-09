@@ -50,7 +50,6 @@ namespace cinema_project.Controllers
         [HttpGet]
         public async Task<IActionResult> ChooseSession(int? Id)
         {
-            
             var sessions_dbContext = _dbContext.Sessions.Where(item => item.Movie.Id == Id).Include(m => m.Movie).Include(h => h.Hall).Include(t => t.Tickets);
             return View(await sessions_dbContext.ToListAsync());
         }
@@ -64,13 +63,24 @@ namespace cinema_project.Controllers
             return View(await seats_dbContext.ToListAsync());
         }
 
-        public async Task<IActionResult> BuyTicket(int row, int column)
+        public async Task<IActionResult> BuyTicket(int row, int column, int hallId)
         {
-            // Code to search for products based on the query and category parameters
-            // ...
-            Seat seat = new Seat { Id = 100, Row = row, Column = column, HallId = 1 };
-            // Return the search results to a view
-            return PartialView("_BuyTicket", seat);
+            var findedSeat = _dbContext.Seats.Where(item => item.Row == row && item.Column == column && item.HallId == hallId).Include(h => h.Hall).FirstOrDefaultAsync();
+            if(findedSeat.Result == null)
+            {
+                Seat seat = new Seat();
+                seat.Column = column;
+                seat.Row = row;
+                seat.HallId = hallId;
+                _dbContext.Add(seat);
+                await _dbContext.SaveChangesAsync();
+                var contextSeat = _dbContext.Seats.Where(item => item.Row == row && item.Column == column && item.HallId == hallId).Include(h => h.Hall).FirstOrDefaultAsync();
+                return PartialView("_BuyTicket", contextSeat.Result);
+            }
+            else
+            {
+                return PartialView("_BuyTicket", findedSeat.Result);
+            }
         }
 
         public IActionResult Privacy()

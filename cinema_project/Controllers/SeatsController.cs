@@ -55,6 +55,12 @@ namespace cinema_project.Controllers
             ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", seat.HallId);
             if (seat.Id == 0)
             {
+                var existingOne = _context.Seats.Where(s => s.Column == seat.Column && s.Row == seat.Row).FirstOrDefaultAsync();
+                if (existingOne.Result != null)
+                {
+                    //If already exists - return Action("Index")
+                    return RedirectToAction("Index");
+                }
                 _context.Add(seat);
             }
             else
