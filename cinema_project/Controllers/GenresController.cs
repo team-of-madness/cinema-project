@@ -41,9 +41,25 @@ namespace cinema_project.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOrEdit(Genre genre)
         {
+
             if (genre.Id == 0)
             {
-                _context.Add(genre);
+                var existedGenre = _context.Genre.FirstOrDefaultAsync(g => g.GenreName == genre.GenreName);
+                if (existedGenre.Result == null)
+                {
+                    //ModelState.ClearValidationState(nameof(Genre));
+                    //if (!TryValidateModel(genre, nameof(Genre)))
+                    //{
+                    //    return PartialView("_AddGenrePartialView", genre);
+                    //}
+
+                    _context.Add(genre);
+
+                }
+                else 
+                {
+                    return BadRequest("This genre_name already exists!");
+                }
             }
             else
             {
