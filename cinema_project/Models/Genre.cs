@@ -6,7 +6,7 @@ namespace cinema_project.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="This field is required!!")]
+        //[Required(ErrorMessage ="This field is required!!")]
         [StringLength(20, ErrorMessage = "This name is too long!")]
         [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "The genre name can contain only letter characters!!") ]
         public string GenreName { get; set; }

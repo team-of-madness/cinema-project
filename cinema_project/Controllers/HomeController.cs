@@ -65,8 +65,8 @@ namespace cinema_project.Controllers
 
         public async Task<IActionResult> BuyTicket(int row, int column, int hallId)
         {
-            var findedSeat = _dbContext.Seats.Where(item => item.Row == row && item.Column == column && item.HallId == hallId).Include(h => h.Hall).FirstOrDefaultAsync();
-            if(findedSeat.Result == null)
+            var foundSeat = _dbContext.Seats.Where(item => item.Row == row && item.Column == column && item.HallId == hallId).Include(h => h.Hall).FirstOrDefaultAsync();
+            if(foundSeat.Result == null)
             {
                 Seat seat = new Seat();
                 seat.Column = column;
@@ -79,7 +79,7 @@ namespace cinema_project.Controllers
             }
             else
             {
-                return PartialView("_BuyTicket", findedSeat.Result);
+                return PartialView("_BuyTicket", foundSeat.Result);
             }
         }
 

@@ -39,6 +39,7 @@ namespace cinema_project.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOrEdit(Genre genre)
         {
 
@@ -47,14 +48,21 @@ namespace cinema_project.Controllers
                 var existedGenre = _context.Genre.FirstOrDefaultAsync(g => g.GenreName == genre.GenreName);
                 if (existedGenre.Result == null)
                 {
-                    //ModelState.ClearValidationState(nameof(Genre));
-                    //if (!TryValidateModel(genre, nameof(Genre)))
-                    //{
-                    //    return PartialView("_AddGenrePartialView", genre);
-                    //}
+                    /*                    ModelState.ClearValidationState(nameof(Genre));
+                                        if (!TryValidateModel(genre, nameof(Genre)))
+                                        {
+                                            return PartialView("_AddGenrePartialView", genre);
+                                        }
+                    */
 
-                    _context.Add(genre);
-
+                    if (!ModelState.IsValid)
+                    {
+                        return PartialView("_AddGenrePartialView", genre);
+                    }
+                    else
+                    {
+                        _context.Add(genre);
+                    }   
                 }
                 else 
                 {
