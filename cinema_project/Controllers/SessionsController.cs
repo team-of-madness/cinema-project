@@ -20,7 +20,7 @@ namespace cinema_project.Controllers
         public async Task<IActionResult> Index()
         {
             var sessions = await _context.Sessions.Include(s => s.Hall).Include(s => s.Movie).ToListAsync();
-            return View( sessions);
+            return View(sessions);
         }
         public async Task<IActionResult> CreateOrEdit(int? id = null)
         {
@@ -48,17 +48,32 @@ namespace cinema_project.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOrEdit(Session session)
         {
             ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
             ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
             if (session.Id == 0)
             {
-                _context.Add(session);
+                if (ModelState.IsValid)
+                {
+                    _context.Add(session);
+                }
+                else
+                {
+                    return BadRequest("Not valid");
+                }
             }
             else
             {
-                _context.Update(session);
+                if (ModelState.IsValid)
+                {
+                    _context.Update(session);
+                }
+                else
+                {
+                    return BadRequest("Not valid");
+                }
             }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -80,7 +95,7 @@ namespace cinema_project.Controllers
                 return NotFound();
             }
 
-            return PartialView("_SessionDetailPartialView",session);
+            return PartialView("_SessionDetailPartialView", session);
         }
 
         // GET: Sessions/Delete/5
@@ -117,14 +132,14 @@ namespace cinema_project.Controllers
             {
                 _context.Sessions.Remove(session);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SessionExists(int id)
         {
-          return (_context.Sessions?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Sessions?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -12,7 +12,7 @@
 
         // Навігаційна властивість
 
-        public Seat Seat { get; set; }
-        public Session Session { get; set; }
+        public Seat? Seat { get; set; }
+        public Session? Session { get; set; }
     }
 }

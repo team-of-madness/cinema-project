@@ -40,15 +40,30 @@ namespace cinema_project.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOrEdit(Hall hall)
         {
             if (hall.Id == 0)
             {
-                _context.Add(hall);
+                if (ModelState.IsValid)
+                {
+                    _context.Add(hall);
+                }
+                else
+                {
+                    return BadRequest("Not valid");
+                }
             }
             else
             {
-                _context.Update(hall);
+                if (ModelState.IsValid)
+                {
+                    _context.Update(hall);
+                }
+                else
+                {
+                    return BadRequest("Not valid");
+                }
             }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -104,14 +119,14 @@ namespace cinema_project.Controllers
             {
                 _context.Halls.Remove(hall);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool HallExists(int id)
         {
-          return (_context.Halls?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Halls?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

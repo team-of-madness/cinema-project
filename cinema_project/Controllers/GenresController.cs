@@ -48,20 +48,13 @@ namespace cinema_project.Controllers
                 var existedGenre = _context.Genre.FirstOrDefaultAsync(g => g.GenreName == genre.GenreName);
                 if (existedGenre.Result == null)
                 {
-                    /*                    ModelState.ClearValidationState(nameof(Genre));
-                                        if (!TryValidateModel(genre, nameof(Genre)))
-                                        {
-                                            return PartialView("_AddGenrePartialView", genre);
-                                        }
-                    */
-
-                    if (!ModelState.IsValid)
+                    if (ModelState.IsValid)
                     {
-                        return PartialView("_AddGenrePartialView", genre);
+                        _context.Add(genre);
                     }
                     else
                     {
-                        _context.Add(genre);
+                        return PartialView("_AddGenrePartialView", genre);
                     }   
                 }
                 else 
@@ -71,7 +64,15 @@ namespace cinema_project.Controllers
             }
             else
             {
-                _context.Update(genre);
+                if (ModelState.IsValid)
+                {
+                    _context.Update(genre);
+                }
+                else
+                {
+                    //Temp
+                    return PartialView("_AddGenrePartialView", genre);
+                }
             }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

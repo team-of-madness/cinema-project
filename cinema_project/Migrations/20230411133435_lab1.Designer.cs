@@ -12,7 +12,7 @@ using cinema_project.Data;
 namespace cinema_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230330195706_lab1")]
+    [Migration("20230411133435_lab1")]
     partial class lab1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,8 @@ namespace cinema_project.Migrations
 
                     b.Property<string>("GenreName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 

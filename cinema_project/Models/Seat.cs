@@ -10,8 +10,8 @@
 
         public int HallId { get; set; }
         
-        public Hall Hall { get; set; }
+        public Hall? Hall { get; set; }
 
-        public List<Ticket> Tickets { get; set; }
+        public List<Ticket>? Tickets { get; set; }
     }
 }

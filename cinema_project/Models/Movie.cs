@@ -14,7 +14,7 @@
         public int GenreId { get; set; }
 
         // Навігаційна властивість
-        public Genre Genre { get; set; }
-        public List<Session> Sessions { get; set; }
+        public Genre? Genre { get; set; }
+        public List<Session>? Sessions { get; set; }
     }
 }

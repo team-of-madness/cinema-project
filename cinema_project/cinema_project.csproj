@@ -9,9 +9,13 @@
 
   <ItemGroup>
     <Compile Remove="Data\Migrations\**" />
+    <Compile Remove="ViewModels\**" />
     <Content Remove="Data\Migrations\**" />
+    <Content Remove="ViewModels\**" />
     <EmbeddedResource Remove="Data\Migrations\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
     <None Remove="Data\Migrations\**" />
+    <None Remove="ViewModels\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>

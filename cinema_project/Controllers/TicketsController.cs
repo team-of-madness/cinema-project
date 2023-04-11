@@ -18,14 +18,14 @@ namespace cinema_project.Controllers
         public async Task<IActionResult> Index()
         {
             var tickets = await _context.Tickets.Include(t => t.Seat).Include(t => t.Session).ToListAsync();
-            return View( tickets);
+            return View(tickets);
         }
 
         public async Task<IActionResult> CreateOrEdit(int? id = null)
         {
             ViewData["PlaceId"] = new SelectList(_context.Seats, "Id", "Id");
             ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id");
-            
+
             Ticket? ticket = null;
             if (id == null)
             {
@@ -43,18 +43,33 @@ namespace cinema_project.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOrEdit(Ticket ticket)
         {
-                ViewData["PlaceId"] = new SelectList(_context.Seats, "Id", "Id", ticket.PlaceId);
-                ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id", ticket.SessionId);
+            ViewData["PlaceId"] = new SelectList(_context.Seats, "Id", "Id", ticket.PlaceId);
+            ViewData["SessionId"] = new SelectList(_context.Sessions, "Id", "Id", ticket.SessionId);
 
             if (ticket.Id == 0)
             {
-                _context.Add(ticket);
+                if (ModelState.IsValid)
+                {
+                    _context.Add(ticket);
+                }
+                else
+                {
+                    return BadRequest("Not valid");
+                }
             }
             else
             {
-                _context.Update(ticket);
+                if (ModelState.IsValid)
+                {
+                    _context.Update(ticket);
+                }
+                else
+                {
+                    return BadRequest("Not valid");
+                }
             }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -79,7 +94,7 @@ namespace cinema_project.Controllers
 
             return PartialView("_TicketDetailPartialView", ticket);
         }
-        
+
         // GET: Tickets/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -114,14 +129,14 @@ namespace cinema_project.Controllers
             {
                 _context.Tickets.Remove(ticket);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TicketExists(int id)
         {
-          return (_context.Tickets?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Tickets?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

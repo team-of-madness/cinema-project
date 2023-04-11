@@ -10,8 +10,8 @@
 
         public int Columns { get; set; }
 
-        public List<Session> Sessions { get; set; }
+        public List<Session>? Sessions { get; set; }
 
-        public List<Seat> Seats { get; set; }
+        public List<Seat>? Seats { get; set; }
     }
 }

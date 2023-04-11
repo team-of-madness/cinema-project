@@ -28,9 +28,9 @@ namespace cinema_project.Controllers
             ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id");
             IEnumerable<Genre> genres = _context.Genre;
             ViewBag.Genre = genres;
-            
+
             Movie? movie = null;
-            if(id == null)
+            if (id == null)
             {
                 movie = new Movie();
             }
@@ -47,23 +47,38 @@ namespace cinema_project.Controllers
 
         // POST: Movies/CreateOrEdit
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOrEdit(Movie movie)
         {
             ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
-            if(movie.Id == 0)
+            if (movie.Id == 0)
             {
-                _context.Add(movie);
+                if (ModelState.IsValid)
+                {
+                    _context.Add(movie);
+                }
+                else
+                {
+                    return BadRequest("Not valid");
+                }
             }
             else
             {
-                _context.Update(movie);
+                if (ModelState.IsValid)
+                {
+                    _context.Update(movie);
+                }
+                else
+                {
+                    return BadRequest("Not valid");
+                }
             }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         // GET: Movies/Details/5
-        public  async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Movies == null)
             {
@@ -113,14 +128,14 @@ namespace cinema_project.Controllers
             {
                 _context.Movies.Remove(movie);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(int id)
         {
-          return (_context.Movies?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Movies?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

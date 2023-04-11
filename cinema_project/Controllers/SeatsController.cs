@@ -48,8 +48,9 @@ namespace cinema_project.Controllers
             return PartialView("_AddSeatPartialView", seat);
         }
         // POST: Seats/CreateOrEdit
-        
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOrEdit(Seat seat)
         {
             ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", seat.HallId);
@@ -61,11 +62,25 @@ namespace cinema_project.Controllers
                     //If already exists - return Action("Index")
                     return RedirectToAction("Index");
                 }
-                _context.Add(seat);
+                if (ModelState.IsValid)
+                {
+                    _context.Add(seat);
+                }
+                else
+                {
+                    return BadRequest("Not valid");
+                }
             }
             else
             {
-                _context.Update(seat);
+                if (ModelState.IsValid)
+                {
+                    _context.Update(seat);
+                }
+                else
+                {
+                    return BadRequest("Not valid");
+                }
             }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -123,14 +138,14 @@ namespace cinema_project.Controllers
             {
                 _context.Seats.Remove(seat);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PlaceExists(int id)
         {
-          return (_context.Seats?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Seats?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
