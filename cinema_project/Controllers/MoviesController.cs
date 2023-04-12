@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using cinema_project.Data;
 using cinema_project.Models;
+using System;
 
 namespace cinema_project.Controllers
 {
@@ -50,27 +51,37 @@ namespace cinema_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOrEdit(Movie movie)
         {
-            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
+            //ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
             if (movie.Id == 0)
             {
-                if (ModelState.IsValid)
+                ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
+                var existMovie = _context.Movies.FirstOrDefaultAsync(m => m.Name == movie.Name);
+                if (existMovie.Result == null)
                 {
-                    _context.Add(movie);
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(movie);
+                    }
+                    else
+                    {
+                        return PartialView("_AddMoviesPartialView", movie);
+                    }
                 }
                 else
                 {
-                    return BadRequest("Not valid");
+                    return BadRequest("This movie_name already exists!");
                 }
             }
             else
             {
+                ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
                 if (ModelState.IsValid)
                 {
                     _context.Update(movie);
                 }
                 else
                 {
-                    return BadRequest("Not valid");
+                    return PartialView("_AddMoviesPartialView", movie);
                 }
             }
             await _context.SaveChangesAsync();

@@ -45,13 +45,21 @@ namespace cinema_project.Controllers
         {
             if (hall.Id == 0)
             {
-                if (ModelState.IsValid)
+                var existHall = _context.Halls.FirstOrDefaultAsync(h => h.Name == hall.Name);
+                if (existHall.Result == null)
                 {
-                    _context.Add(hall);
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(hall);
+                    }
+                    else
+                    {
+                        return PartialView("_AddHallPartialView", hall);
+                    }
                 }
                 else
                 {
-                    return BadRequest("Not valid");
+                    return BadRequest("This hall_name already exists!");
                 }
             }
             else
@@ -62,7 +70,7 @@ namespace cinema_project.Controllers
                 }
                 else
                 {
-                    return BadRequest("Not valid");
+                    return PartialView("_AddHallPartialView", hall);
                 }
             }
             await _context.SaveChangesAsync();

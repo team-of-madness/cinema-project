@@ -45,8 +45,8 @@ namespace cinema_project.Controllers
 
             if (genre.Id == 0)
             {
-                var existedGenre = _context.Genre.FirstOrDefaultAsync(g => g.GenreName == genre.GenreName);
-                if (existedGenre.Result == null)
+                var existGenre = _context.Genre.FirstOrDefaultAsync(g => g.GenreName == genre.GenreName);
+                if (existGenre.Result == null)
                 {
                     if (ModelState.IsValid)
                     {
@@ -70,7 +70,6 @@ namespace cinema_project.Controllers
                 }
                 else
                 {
-                    //Temp
                     return PartialView("_AddGenrePartialView", genre);
                 }
             }

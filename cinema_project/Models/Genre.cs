@@ -8,7 +8,7 @@ namespace cinema_project.Models
 
         [Required(ErrorMessage ="This field is required!!")]
         [StringLength(20, ErrorMessage = "This name is too long!")]
-        [RegularExpression("^[a-zA-Z\\s]+$", ErrorMessage = "The genre name can contain only letter characters!!")]
+        [RegularExpression("^[a-zA-Z\\s]+$", ErrorMessage = "The genre name can contain only letter characters and spaces!!")]
         public string GenreName { get; set; }
 
         // Навігаційна властивість

@@ -1,5 +1,4 @@
-﻿
-const input = document.getElementById('onlyLettersField'); // отримання елементу вводу
+﻿const input = document.getElementById('onlyLettersField'); // отримання елементу вводу
 const regex = /^[a-zA-Z\s]*$/; // регулярний вираз, який відповідає лише літерам та пробілам
 
 input.addEventListener('input', () => { // додавання обробника події для вводу

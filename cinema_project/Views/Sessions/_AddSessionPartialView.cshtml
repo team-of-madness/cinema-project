@@ -3,7 +3,9 @@
     ViewData["Title"] = "_AddSessionPartialView";
     var isCreate = Model.Id == 0;
 }
-
+<head>
+    <link rel="stylesheet" href="~/css/partialView.css" asp-append-version="true" />
+</head>
 <div class="modal fade" role="dialog" tabindex="-1" id="addSession" aria-labelledby="addSessionLable" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content" style="background-color:lightblue !important;">

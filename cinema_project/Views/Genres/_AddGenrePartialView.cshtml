@@ -3,7 +3,9 @@
 	ViewData["Title"] = "_AddGenrePartialView";
 	var isCreate = Model.Id == 0;
 }
-
+<head>
+	<link rel="stylesheet" href="~/css/partialView.css" asp-append-version="true" />
+</head>
 <div class="modal fade" role="dialog" tabindex="-1" id="addGenre" aria-labelledby="addGenreLable" aria-hidden="true">
 	<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
 		<div class="modal-content" style="background-color:lightblue !important;">
@@ -14,7 +16,7 @@
 					<input type="hidden" asp-for="Id" />
 					<div class="form-group">
 						<label asp-for="GenreName" class="control-label"></label>
-						<input id="onlyLettersField" asp-for="GenreName" class="form-control" minlength="1" maxlength="20" required />
+						<input id="onlyLettersField" asp-for="GenreName" class="form-control required" minlength="1" maxlength="20" required />
 						<span asp-validation-for="GenreName" class="text-danger"></span>
 					</div>
 					<div class="modal-footer">
