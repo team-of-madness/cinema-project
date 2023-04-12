@@ -131,10 +131,5 @@ namespace cinema_project.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        private bool HallExists(int id)
-        {
-            return (_context.Halls?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
     }
 }

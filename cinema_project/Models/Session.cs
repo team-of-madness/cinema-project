@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace cinema_project.Models
 {
@@ -6,13 +6,19 @@ namespace cinema_project.Models
     {
         public int Id { get; set; }
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+		[Required(ErrorMessage = "This field is required!!")]
+		public DateTime StartDate { get; set; }
 
-        // Зовнішній ключ
+		[Required(ErrorMessage = "This field is required!!")]
+		public DateTime EndDate { get; set; }
 
-        public int HallId { get; set; }
-        public int MovieId { get; set; }
+		// Зовнішній ключ
+
+		[Required(ErrorMessage = "This field is required!!")]
+		public int HallId { get; set; }
+
+		[Required(ErrorMessage = "This field is required!!")]
+		public int MovieId { get; set; }
 
         // Навігаційна властивість
         public Hall? Hall { get; set; }

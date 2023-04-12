@@ -53,7 +53,11 @@ namespace cinema_project.Controllers
         {
             ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
             ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
-            if (session.Id == 0)
+			IEnumerable<Hall> halls = _context.Halls;
+			ViewBag.Halls = halls;
+			IEnumerable<Movie> movies = _context.Movies;
+			ViewBag.Movies = movies;
+			if (session.Id == 0)
             {
                 if (ModelState.IsValid)
                 {
@@ -135,11 +139,6 @@ namespace cinema_project.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool SessionExists(int id)
-        {
-            return (_context.Sessions?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

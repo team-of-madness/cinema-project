@@ -25,11 +25,12 @@ namespace cinema_project.Models
 
         [Required(ErrorMessage = "This field is required!!")]
         [StringLength(35, ErrorMessage = "This name is too long!")]
-        [RegularExpression("^[a-zA-Z\\s]+$", ErrorMessage = "The genre name can contain only letter characters!!")]
+        [RegularExpression("^[a-zA-Z\\s]+$", ErrorMessage = "The producer name can contain only letter characters!!")]
         public string Producer { get; set; }
 
-        // Зовнішній ключ
-        public int GenreId { get; set; }
+		// Зовнішній ключ
+		[Required(ErrorMessage = "This field is required!!")]
+		public int GenreId { get; set; }
 
         // Навігаційна властивість
         public Genre? Genre { get; set; }

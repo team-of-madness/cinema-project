@@ -57,9 +57,8 @@ namespace cinema_project.Controllers
         [HttpGet]
         public async Task<IActionResult> ChoosePlace(int? Id)
         {
-            //Incorrect logic. Required to fix
-            int sessionID = _dbContext.Sessions.FindAsync(Id).Result.HallId;
-            var seats_dbContext = _dbContext.Seats.Include(h => h.Hall).Where(item => item.Hall.Id == sessionID);
+            Session? sessionObject = _dbContext.Sessions.Find(Id);
+            var seats_dbContext = _dbContext.Seats.Include(h => h.Hall).Where(item => item.HallId == sessionObject.HallId);
             return View(await seats_dbContext.ToListAsync());
         }
 

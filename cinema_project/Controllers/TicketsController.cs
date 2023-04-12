@@ -57,7 +57,7 @@ namespace cinema_project.Controllers
                 }
                 else
                 {
-                    return BadRequest("Not valid");
+                    return PartialView("_AddTicketPartialView", ticket);
                 }
             }
             else
@@ -68,8 +68,8 @@ namespace cinema_project.Controllers
                 }
                 else
                 {
-                    return BadRequest("Not valid");
-                }
+					return PartialView("_AddTicketPartialView", ticket);
+				}
             }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -132,11 +132,6 @@ namespace cinema_project.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool TicketExists(int id)
-        {
-            return (_context.Tickets?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -127,10 +127,5 @@ namespace cinema_project.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        private bool GenreExists(int id)
-        {
-          return (_context.Genre?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
     }
 }

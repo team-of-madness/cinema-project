@@ -51,10 +51,11 @@ namespace cinema_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOrEdit(Movie movie)
         {
-            //ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
-            if (movie.Id == 0)
+            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
+			IEnumerable<Genre> genres = _context.Genre;
+			ViewBag.Genre = genres;
+			if (movie.Id == 0)
             {
-                ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
                 var existMovie = _context.Movies.FirstOrDefaultAsync(m => m.Name == movie.Name);
                 if (existMovie.Result == null)
                 {
@@ -69,12 +70,12 @@ namespace cinema_project.Controllers
                 }
                 else
                 {
+                    //Return using alerts
                     return BadRequest("This movie_name already exists!");
                 }
             }
             else
             {
-                ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movie.GenreId);
                 if (ModelState.IsValid)
                 {
                     _context.Update(movie);
@@ -142,11 +143,6 @@ namespace cinema_project.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool MovieExists(int id)
-        {
-            return (_context.Movies?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

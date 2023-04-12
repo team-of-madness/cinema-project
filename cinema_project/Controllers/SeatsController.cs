@@ -54,9 +54,11 @@ namespace cinema_project.Controllers
         public async Task<IActionResult> CreateOrEdit(Seat seat)
         {
             ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", seat.HallId);
-            if (seat.Id == 0)
+			IEnumerable<Hall> halls = _context.Halls;
+			ViewBag.Halls = halls;
+			if (seat.Id == 0)
             {
-                var existingOne = _context.Seats.Where(s => s.Column == seat.Column && s.Row == seat.Row).FirstOrDefaultAsync();
+                var existingOne = _context.Seats.Where(s => s.Column == seat.Column && s.Row == seat.Row && s.HallId == seat.HallId).FirstOrDefaultAsync();
                 if (existingOne.Result != null)
                 {
                     //If already exists - return Action("Index")
@@ -68,7 +70,7 @@ namespace cinema_project.Controllers
                 }
                 else
                 {
-                    return BadRequest("Not valid");
+                    return PartialView("_AddSeatPartialView", seat);
                 }
             }
             else
@@ -79,7 +81,7 @@ namespace cinema_project.Controllers
                 }
                 else
                 {
-                    return BadRequest("Not valid");
+                    return PartialView("_AddSeatPartialView", seat);
                 }
             }
             await _context.SaveChangesAsync();
@@ -141,11 +143,6 @@ namespace cinema_project.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool PlaceExists(int id)
-        {
-            return (_context.Seats?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

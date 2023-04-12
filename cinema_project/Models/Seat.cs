@@ -1,14 +1,19 @@
-﻿namespace cinema_project.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace cinema_project.Models
 {
     public class Seat
     {
         public int Id { get; set; }
 
-        public int Row { get; set; }
+		[Required(ErrorMessage = "This field is required!!")]
+		public int Row { get; set; }
 
-        public int Column { get; set; }
+		[Required(ErrorMessage = "This field is required!!")]
+		public int Column { get; set; }
 
-        public int HallId { get; set; }
+		[Required(ErrorMessage = "This field is required!!")]
+		public int HallId { get; set; }
         
         public Hall? Hall { get; set; }
 
