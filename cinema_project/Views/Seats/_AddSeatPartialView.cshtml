@@ -16,17 +16,17 @@
                     <input type="hidden" asp-for="Id" />
                     <div class="form-group">
                         <label asp-for="Row" class="control-label"></label>
-                        <input asp-for="Row" class="form-control" />
+                        <input asp-for="Row" class="form-control" required/>
                         <span asp-validation-for="Row" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Column" class="control-label"></label>
-                        <input asp-for="Column" class="form-control" />
+                        <input asp-for="Column" class="form-control" required />
                         <span asp-validation-for="Column" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="HallId" class="control-label"></label>
-                        <select asp-for="HallId" class="form-control" asp-items="@(new SelectList(ViewBag.Halls, nameof(Hall.Id), nameof(Hall.Name)))"><option>Please select one</option></select>
+                        <select asp-for="HallId" class="form-control" asp-items="@(new SelectList(ViewBag.Halls, nameof(Hall.Id), nameof(Hall.Name)))" required><option>Please select one</option></select>
                     </div>
                     <div class="modal-footer">
                         <input type="submit" value="@(isCreate?"Create":"Edit")" class="btn btn-primary" />

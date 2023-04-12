@@ -16,21 +16,21 @@
                     <input type="hidden" asp-for="Id" />
                     <div class="form-group">
                         <label asp-for="StartDate" class="control-label"></label>
-                        <input asp-for="StartDate" class="form-control" />
+                        <input asp-for="StartDate" class="form-control datetime-input" required/>
                         <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="EndDate" class="control-label"></label>
-                        <input asp-for="EndDate" class="form-control" />
+                        <input asp-for="EndDate" class="form-control datetime-input" required/>
                         <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Hall" class="control-label"></label>
-                        <select asp-for="HallId" class="form-control" asp-items="@(new SelectList(ViewBag.Halls, nameof(Hall.Id), nameof(Hall.Name)))"><option>Please select one</option></select>
+                        <select asp-for="HallId" class="form-control" asp-items="@(new SelectList(ViewBag.Halls, nameof(Hall.Id), nameof(Hall.Name)))" required><option>Please select one</option></select>
                     </div>
                     <div class="form-group">
                         <label asp-for="Movie" class="control-label"></label>
-                        <select asp-for="MovieId" class="form-control" asp-items="@(new SelectList(ViewBag.Movies, nameof(Movie.Id), nameof(Movie.Name)))"><option>Please select one</option></select>
+                        <select asp-for="MovieId" class="form-control" asp-items="@(new SelectList(ViewBag.Movies, nameof(Movie.Id), nameof(Movie.Name)))" required><option>Please select one</option></select>
                     </div>
                     <div class="form-group">
                         <input type="submit" value="@(isCreate?"Create":"Edit")" class="btn btn-primary" />
@@ -40,3 +40,5 @@
         </div>
     </div>
 </div>
+
+<script src="~/js/validator.js" type="text/javascript" asp-append-version="true"></script>

@@ -16,7 +16,7 @@
 					<input type="hidden" asp-for="Id" />
 					<div class="form-group">
 						<label asp-for="GenreName" class="control-label"></label>
-						<input id="onlyLettersField" asp-for="GenreName" class="form-control required" minlength="1" maxlength="20" required />
+						<input asp-for="GenreName" class="form-control onlyLettersField" maxlength="20" required />
 						<span asp-validation-for="GenreName" class="text-danger"></span>
 					</div>
 					<div class="modal-footer">

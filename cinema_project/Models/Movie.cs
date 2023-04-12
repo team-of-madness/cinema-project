@@ -15,7 +15,7 @@ namespace cinema_project.Models
         public string Description { get; set; }
 
         [Required(ErrorMessage = "This field is required!!")]
-        [Range(20, 300, ErrorMessage = "The duration can not be less than 20 minutes and can not be more than 300!")]
+        [Range(1, 300, ErrorMessage = "The duration can not be less than 20 minutes and can not be more than 300!")]
         public int Duration { get; set; }
 
         [Required(ErrorMessage = "This field is required!!")]

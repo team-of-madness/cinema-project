@@ -65,7 +65,7 @@ namespace cinema_project.Controllers
                 }
                 else
                 {
-                    return BadRequest("Not valid");
+                    return PartialView("_AddSessionPartialView", session);
                 }
             }
             else
@@ -76,7 +76,7 @@ namespace cinema_project.Controllers
                 }
                 else
                 {
-                    return BadRequest("Not valid");
+                    return PartialView("_AddSessionPartialView", session);
                 }
             }
             await _context.SaveChangesAsync();
