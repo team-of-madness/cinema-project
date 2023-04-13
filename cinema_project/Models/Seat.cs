@@ -7,10 +7,12 @@ namespace cinema_project.Models
         public int Id { get; set; }
 
 		[Required(ErrorMessage = "This field is required!!")]
-		public int Row { get; set; }
+        [Range(0, 9, ErrorMessage = "The row number couldnt be more than 10")]
+        public int Row { get; set; }
 
 		[Required(ErrorMessage = "This field is required!!")]
-		public int Column { get; set; }
+        [Range(0, 11, ErrorMessage = "The column number couldnt be more than 10")]
+        public int Column { get; set; }
 
 		[Required(ErrorMessage = "This field is required!!")]
 		public int HallId { get; set; }
