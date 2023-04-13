@@ -1,11 +1,11 @@
-﻿@model IEnumerable<cinema_project.Models.Seat>
+﻿@model Hall;
 
 @{
     ViewData["Title"] = "Seats";
-    var list = Model.ToList();
-    int rows = list[0].Hall.Rows;
-    int cols = list[0].Hall.Columns;
-    int hallId = list[0].HallId;
+    //var list = Model.ToList();
+    int rows = Model.Rows;
+    int cols = Model.Columns;
+    int hallId = Model.Id;
     int usefull_var = 0;
 
 }

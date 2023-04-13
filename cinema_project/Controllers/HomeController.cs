@@ -58,8 +58,9 @@ namespace cinema_project.Controllers
         public async Task<IActionResult> ChoosePlace(int? Id)
         {
             Session? sessionObject = _dbContext.Sessions.Find(Id);
+            Hall? hallObject = _dbContext.Halls.Find(sessionObject.HallId);
             var seats_dbContext = _dbContext.Seats.Include(h => h.Hall).Where(item => item.HallId == sessionObject.HallId);
-            return View(await seats_dbContext.ToListAsync());
+            return View(hallObject);
         }
 
         public async Task<IActionResult> BuyTicket(int row, int column, int hallId)
