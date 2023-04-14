@@ -59,6 +59,7 @@ namespace cinema_project.Controllers
                 }
                 else
                 {
+                    //Return using alerts
                     return BadRequest("This hall_name already exists!");
                 }
             }

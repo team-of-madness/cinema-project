@@ -1,67 +1,61 @@
 ﻿@model Hall;
 
 @{
-    ViewData["Title"] = "Seats";
-    //var list = Model.ToList();
-    int rows = Model.Rows;
-    int cols = Model.Columns;
-    int hallId = Model.Id;
-    int usefull_var = 0;
+	ViewData["Title"] = "Seats";
+	int rows = Model.Rows;
+	int cols = Model.Columns;
+	int hallId = Model.Id;
+	int usefull_var = 0;
 
 }
 <div id="ticketOrder"></div>
 <h1>Choose one seat</h1>
 <table class="table">
-    <tbody>
-        <tr>
-            <div style="width:900px;border: 12px solid #CAF9FF; margin: 0px 0px 3% 15%"> </div>
-        </tr>
-        @for (int row = 0; row < rows; row++)
-        {
-            <tr>
-                <th>
-                    <div>
-                        @{
-                            usefull_var = row + 1;
-                        }
-                        @usefull_var row
-                    </div>
-                </th>
-                @for (int col = 0; col < cols; col++)
-                {
-                    <td>
-                        @*@{
-                            var parms = new Dictionary<string, string> { { "row", row.ToString() }, { "column", col.ToString() }, { "hallId", hallId.ToString()} };
-                        }
-                        <a asp-action="BuyTicket" asp-all-route-data="parms">*@
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#buyTicket" onclick="buyTicket(@row,@col,@hallId)">
-                            <div style="height:100px; width:100px; border: 5px solid #611B0C; display: inline-block;">
-                                <div style="display: flex; justify-content: center;">
-                                    @{
-                                        usefull_var = col + 1;
-                                    }
-                                    @usefull_var
-                                </div>
-                            </div>
-                            </button>
-                        @*</a>*@
-                    </td>
-                }
-            </tr>
-        }
-    </tbody>
+	<tbody>
+		<tr>
+			<div style="width:900px;border: 12px solid #CAF9FF; margin: 0px 0px 3% 15%"> </div>
+		</tr>
+		@for (int row = 0; row < rows; row++)
+		{
+			<tr>
+				<th>
+					<div>
+						@{
+							usefull_var = row + 1;
+						}
+						@usefull_var row
+					</div>
+				</th>
+				@for (int col = 0; col < cols; col++)
+				{
+					<td>
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#buyTicket" onclick="buyTicket(@row,@col,@hallId)">
+							<div style="height:100px; width:100px; border: 5px solid #611B0C; display: inline-block;">
+								<div style="display: flex; justify-content: center;">
+									@{
+										usefull_var = col + 1;
+									}
+									@usefull_var
+								</div>
+							</div>
+						</button>
+					</td>
+				}
+			</tr>
+		}
+	</tbody>
 </table>
 
 
 <script>
-    function buyTicket(row,column,hallId) {
-        $.ajax({
-            type: "Get",
-            url: "/Home/BuyTicket?row=" + row + "&column=" + column + "&hallId=" + hallId,
-            success: function (result) {
-                $("#ticketOrder").html(result);
-                $("#buyTicket").modal('show');
-            }
-        });
-    }
+	function buyTicket(row, column, hallId) {
+		$.ajax({
+			type: "Get",
+			url: "/Home/BuyTicket?row=" + row + "&column=" + column + "&hallId=" + hallId,
+			success: function (result) {
+				$("#ticketOrder").html(result);
+				$("#buyTicket").modal('show');
+			}
+		});
+	}
 </script>
