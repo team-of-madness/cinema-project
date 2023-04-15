@@ -11,12 +11,12 @@
 		<div class="modal-content" style="background-color:lightblue !important;">
 			<div class="modal-header"><h3>Genre</h3></div>
 			<div class="modal-body">
-				<form asp-action="CreateOrEdit" method="post">
+				<form asp-action="CreateOrEdit" method="post" id="genreForm">
 					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 					<input type="hidden" asp-for="Id" />
 					<div class="form-group">
 						<label asp-for="GenreName" class="control-label"></label>
-						<input asp-for="GenreName" class="form-control onlyLettersField" maxlength="20" required />
+						<input id="name" asp-for="GenreName" class="form-control onlyLettersField" maxlength="20" required />
 						<span asp-validation-for="GenreName" class="text-danger"></span>
 					</div>
 					<div class="modal-footer">

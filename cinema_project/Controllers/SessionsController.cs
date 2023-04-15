@@ -57,6 +57,7 @@ namespace cinema_project.Controllers
 			ViewBag.Halls = halls;
 			IEnumerable<Movie> movies = _context.Movies;
 			ViewBag.Movies = movies;
+			//var existSession = _context.Movies.FirstOrDefaultAsync(m => m.Name == session.);
 			if (session.Id == 0)
             {
                 if (ModelState.IsValid)

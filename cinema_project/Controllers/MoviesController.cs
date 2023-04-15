@@ -20,10 +20,6 @@ namespace cinema_project.Controllers
 		public async Task<IActionResult> Index()
 		{
 			var movies = await _context.Movies.Include(m => m.Genre).ToListAsync();
-			/*if (TempData.ContainsKey("ErrorMessage"))
-			{
-				ViewBag.ErrorMessage = TempData["ErrorMessage"];
-			}*/
 			return View(movies);
 		}
 
@@ -59,51 +55,36 @@ namespace cinema_project.Controllers
 			IEnumerable<Genre> genres = _context.Genre;
 			ViewBag.Genre = genres;
 			var existMovie = _context.Movies.FirstOrDefaultAsync(m => m.Name == movie.Name);
-			if (movie.Id == 0)
+			if (existMovie.Result == null)
 			{
-				if (existMovie.Result == null)
+				var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage + '\n'));
+				if (movie.Id == 0)
 				{
 					if (ModelState.IsValid)
 					{
-						//TempData["SuccessMessage"] = "Element was successfully added";
 						_context.Add(movie);
 					}
 					else
 					{
-						//TempData["ErrorMessage"] = "Please enter valid movie information.";
-						return Json(new { success = true, movie });
+						return Json(new { success = true, movie, errors});
 					}
 				}
 				else
 				{
-					//Movie name already reserved
-					//TempData["ErrorMessage"] = "This movie_name already exists!";
-					//return RedirectToAction("Index");
-					return Json(new { success = false, message = "This movie_name already exists!" });
-				}
-			}
-			else
-			{
-				if (existMovie.Result == null)
-				{
 					if (ModelState.IsValid)
 					{
-						//TempData["SuccessMessage"] = "Element was successfully updated";
 						_context.Update(movie);
 					}
 					else
 					{
-						//TempData["ErrorMessage"] = "Please enter valid movie information.";
-						return Json(new { success = true, movie });
+						return Json(new { success = true, movie, errors });
 					}
 				}
-				else
-				{
-					//Movie name already reserved
-					//TempData["ErrorMessage"] = "This movie_name already exists!";
-					//return RedirectToAction("Index");
-					return Json(new { success = false, message = "This movie_name already exists!" });
-				}
+
+			}
+			else
+			{
+				return Json(new { success = false, message = "This movie_name already exists!" });
 			}
 			await _context.SaveChangesAsync();
 			return Json(new { success = true, message = "Index" });

@@ -55,6 +55,29 @@
             success: function (result) {
                 $("#genreTable").html(result);
                 $("#addGenre").modal('show');
+                // Attach submit event handler to the form
+                $("#genreForm").submit(function (event) {
+                    event.preventDefault(); // Prevent default form submission
+                    var formData = $(this).serialize(); // Serialize form data
+                    $.ajax({
+                        type: "POST",
+                        url: "/Genres/CreateOrEdit",
+                        data: formData,
+                        success: function (result) {
+                            if (result.success) {
+                                if (result.message === 'Index') { // Validation passed
+                                    location.reload();// Reload page to update main view
+                                } else { // Validation failed
+                                    $("#name").val(result.genre.genreName);
+                                    alert(result.errors);
+                                }
+                            }
+                            else {
+                                alert(result.message);
+                            }
+                        }
+                    });
+                });
             }
         });
     }
