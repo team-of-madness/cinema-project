@@ -48,25 +48,29 @@ namespace cinema_project.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ChooseSession(int? Id)
+        public async Task<IActionResult> ChooseSession(int? Id)//Movie id
         {
             var sessions_dbContext = _dbContext.Sessions.Where(item => item.Movie.Id == Id).Include(m => m.Movie).Include(h => h.Hall).Include(t => t.Tickets);
             return View(await sessions_dbContext.ToListAsync());
         }
 
         [HttpGet]
-        public async Task<IActionResult> ChoosePlace(int? Id)
+        public async Task<IActionResult> ChoosePlace(int? Id)//Session id
         {
             Session? sessionObject = _dbContext.Sessions.Find(Id);
-            Hall? hallObject = _dbContext.Halls.Find(sessionObject.HallId);
-            var seats_dbContext = _dbContext.Seats.Include(h => h.Hall).Where(item => item.HallId == sessionObject.HallId);
+            //Hall? hallObject = _dbContext.Halls.FindAsync(sessionObject.HallId).Result;
+            Hall? hallObject = _dbContext.Halls.FindAsync(sessionObject.HallId).Result;
+            hallObject.Sessions = _dbContext.Sessions.Where(el => el.Id == Id).ToList();
             return View(hallObject);
         }
 
-        public async Task<IActionResult> BuyTicket(int row, int column, int hallId)
+        public async Task<IActionResult> BuyTicket(int row, int column, int hallId, int sessionId)
         {
-            var foundSeat = _dbContext.Seats.Where(item => item.Row == row && item.Column == column && item.HallId == hallId).Include(h => h.Hall).FirstOrDefaultAsync();
-            if(foundSeat.Result == null)
+            var foundSeat = await _dbContext.Seats.Where(item => item.Row == row && item.Column == column && item.HallId == hallId).Include(h => h.Hall).FirstOrDefaultAsync();
+            Ticket ticket = new Ticket();
+            ticket.SessionId = sessionId;
+            ticket.Session = await _dbContext.Sessions.FindAsync(sessionId);
+            if(foundSeat == null)
             {
                 Seat seat = new Seat();
                 seat.Column = column;
@@ -74,13 +78,35 @@ namespace cinema_project.Controllers
                 seat.HallId = hallId;
                 _dbContext.Add(seat);
                 await _dbContext.SaveChangesAsync();
-                var contextSeat = _dbContext.Seats.Where(item => item.Row == row && item.Column == column && item.HallId == hallId).Include(h => h.Hall).FirstOrDefaultAsync();
-                return PartialView("_BuyTicket", contextSeat.Result);
+                var contextSeat = await _dbContext.Seats.Where(item => item.Row == row && item.Column == column && item.HallId == hallId).Include(h => h.Hall).FirstOrDefaultAsync();
+                ticket.Seat = contextSeat;
+                ViewBag.Hall = await _dbContext.Halls.FindAsync(hallId);
+                ticket.PlaceId = contextSeat.Id;
+                return PartialView("_BuyTicket", ticket);
             }
             else
             {
-                return PartialView("_BuyTicket", foundSeat.Result);
+                ticket.Seat = foundSeat;
+                ticket.PlaceId = foundSeat.Id;
+                return PartialView("_BuyTicket", ticket);
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BuyTicket(Ticket ticket)
+        {
+            if (ModelState.IsValid)
+            {
+                ticket.Seat = null;
+                ticket.Session = null;
+                _dbContext.Add(ticket);
+            }
+            else
+            {
+                return Json(new { success = false, ticket, message = "Object ticket is not valid" });
+            }
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

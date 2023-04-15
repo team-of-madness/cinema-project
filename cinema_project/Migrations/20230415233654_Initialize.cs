@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace cinema_project.Migrations
 {
-    public partial class lab12 : Migration
+    public partial class Initialize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -188,11 +188,11 @@ namespace cinema_project.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(350)", maxLength: 350, nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
                     MinAge = table.Column<int>(type: "int", nullable: false),
-                    Producer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Producer = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: false),
                     GenreId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -261,7 +261,7 @@ namespace cinema_project.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     SessionId = table.Column<int>(type: "int", nullable: false),
                     PlaceId = table.Column<int>(type: "int", nullable: false)
                 },

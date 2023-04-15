@@ -11,22 +11,22 @@
         <div class="modal-content" style="background-color:lightblue !important;">
             <div class="modal-header"><h3>Hall</h3></div>
             <div class="modal-body">
-                <form asp-action="CreateOrEdit">
+                <form asp-action="CreateOrEdit" id="hallForm">
                     <input type="hidden" asp-for="Id" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" class="form-control" required maxlength="20" />
+                        <input id="name" asp-for="Name" class="form-control" required maxlength="20" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Rows" class="control-label"></label>
-                        <input asp-for="Rows" class="form-control" required  min="1" max="10"/>
+                        <input id="rows" asp-for="Rows" class="form-control" required  min="1" max="10"/>
                         <span asp-validation-for="Rows" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Columns" class="control-label"></label>
-                        <input asp-for="Columns" class="form-control" required min="1" max="12"/>
+                        <input id="columns" asp-for="Columns" class="form-control" required min="1" max="12"/>
                         <span asp-validation-for="Columns" class="text-danger"></span>
                     </div>
                     <div class="modal-footer">

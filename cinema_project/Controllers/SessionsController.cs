@@ -53,35 +53,45 @@ namespace cinema_project.Controllers
         {
             ViewData["HallId"] = new SelectList(_context.Halls, "Id", "Id", session.HallId);
             ViewData["MovieId"] = new SelectList(_context.Movies, "Id", "Id", session.MovieId);
-			IEnumerable<Hall> halls = _context.Halls;
-			ViewBag.Halls = halls;
-			IEnumerable<Movie> movies = _context.Movies;
-			ViewBag.Movies = movies;
-			//var existSession = _context.Movies.FirstOrDefaultAsync(m => m.Name == session.);
-			if (session.Id == 0)
+            IEnumerable<Hall> halls = _context.Halls;
+            ViewBag.Halls = halls;
+            IEnumerable<Movie> movies = _context.Movies;
+            ViewBag.Movies = movies;
+            var movie = _context.Movies.FindAsync(session.MovieId);
+            session.EndDate = session.StartDate.AddMinutes(movie.Result.Duration);
+            var existSession = _context.Sessions.FirstOrDefaultAsync(m => m.MovieId == session.MovieId && m.StartDate == session.StartDate && m.EndDate == session.EndDate);
+            if (existSession.Result == null)
             {
-                if (ModelState.IsValid)
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage + '\n'));
+                if (session.Id == 0)
                 {
-                    _context.Add(session);
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(session);
+                    }
+                    else
+                    {
+                        return Json(new { success = true, session, errors });
+                    }
                 }
                 else
                 {
-                    return PartialView("_AddSessionPartialView", session);
+                    if (ModelState.IsValid)
+                    {
+                        _context.Update(session);
+                    }
+                    else
+                    {
+                        return Json(new { success = true, session, errors });
+                    }
                 }
             }
             else
             {
-                if (ModelState.IsValid)
-                {
-                    _context.Update(session);
-                }
-                else
-                {
-                    return PartialView("_AddSessionPartialView", session);
-                }
+                return Json(new { succcess = false, message = "Object with such data already exists!" });
             }
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return Json(new { success = true, message = "Index" });
         }
         // GET: Sessions/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -12,8 +12,8 @@ using cinema_project.Data;
 namespace cinema_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230412061305_lab12")]
-    partial class lab12
+    [Migration("20230415233654_Initialize")]
+    partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -76,7 +76,8 @@ namespace cinema_project.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(350)
+                        .HasColumnType("nvarchar(350)");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
@@ -89,11 +90,13 @@ namespace cinema_project.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Producer")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(35)
+                        .HasColumnType("nvarchar(35)");
 
                     b.HasKey("Id");
 
@@ -171,7 +174,8 @@ namespace cinema_project.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 

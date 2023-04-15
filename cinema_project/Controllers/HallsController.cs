@@ -43,10 +43,11 @@ namespace cinema_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOrEdit(Hall hall)
         {
-            if (hall.Id == 0)
+            var existHall = _context.Halls.FirstOrDefaultAsync(h => h.Name == hall.Name);
+            if (existHall.Result == null)
             {
-                var existHall = _context.Halls.FirstOrDefaultAsync(h => h.Name == hall.Name);
-                if (existHall.Result == null)
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage + '\n'));
+                if (hall.Id == 0)
                 {
                     if (ModelState.IsValid)
                     {
@@ -54,28 +55,27 @@ namespace cinema_project.Controllers
                     }
                     else
                     {
-                        return PartialView("_AddHallPartialView", hall);
+                        return Json(new { success = true, hall, errors });
                     }
                 }
                 else
                 {
-                    //Return using alerts
-                    return BadRequest("This hall_name already exists!");
+                    if (ModelState.IsValid)
+                    {
+                        _context.Update(hall);
+                    }
+                    else
+                    {
+                        return Json(new { success = true, hall, errors });
+                    }
                 }
             }
             else
             {
-                if (ModelState.IsValid)
-                {
-                    _context.Update(hall);
-                }
-                else
-                {
-                    return PartialView("_AddHallPartialView", hall);
-                }
+                return Json(new { success = false, message = "This hall_name already exists!" });
             }
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return Json(new { success = true, message = "Index" });
         }
 
 

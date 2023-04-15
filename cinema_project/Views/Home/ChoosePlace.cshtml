@@ -5,6 +5,7 @@
 	int rows = Model.Rows;
 	int cols = Model.Columns;
 	int hallId = Model.Id;
+	int sessionId = Model.Sessions[0].Id;
 	int usefull_var = 0;
 
 }
@@ -29,7 +30,7 @@
 				@for (int col = 0; col < cols; col++)
 				{
 					<td>
-						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#buyTicket" onclick="buyTicket(@row,@col,@hallId)">
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#buyTicket" onclick="buyTicket(@row,@col,@hallId, @sessionId)">
 							<div style="height:100px; width:100px; border: 5px solid #611B0C; display: inline-block;">
 								<div style="display: flex; justify-content: center;">
 									@{
@@ -48,10 +49,10 @@
 
 
 <script>
-	function buyTicket(row, column, hallId) {
+	function buyTicket(row, column, hallId, sessionId) {
 		$.ajax({
 			type: "Get",
-			url: "/Home/BuyTicket?row=" + row + "&column=" + column + "&hallId=" + hallId,
+			url: "/Home/BuyTicket?row=" + row + "&column=" + column + "&hallId=" + hallId + "&sessionId=" + sessionId,
 			success: function (result) {
 				$("#ticketOrder").html(result);
 				$("#buyTicket").modal('show');

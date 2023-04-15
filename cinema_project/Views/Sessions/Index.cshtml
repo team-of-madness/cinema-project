@@ -71,6 +71,29 @@
             success: function (result) {
                 $("#sessionTable").html(result);
                 $("#addSession").modal('show');
+                // Attach submit event handler to the form
+                $("#sessionForm").submit(function (event) {
+                    event.preventDefault(); // Prevent default form submission
+                    var formData = $(this).serialize(); // Serialize form data
+                    $.ajax({
+                        type: "POST",
+                        url: "/Sessions/CreateOrEdit",
+                        data: formData,
+                        success: function (result) {
+                            if (result.success) {
+                                if (result.message === 'Index') { // Validation passed
+                                    location.reload();// Reload page to update main view
+                                } else { // Validation failed
+                                    $("#startdate").val(result.session.startDate);
+                                    alert(result.errors);
+                                }
+                            }
+                            else {
+                                alert(result.message);
+                            }
+                        }
+                    });
+                });
             }
         });
     }

@@ -64,6 +64,31 @@
             success: function (result) {
                 $("#hallTable").html(result);
                 $("#addHall").modal('show');
+                // Attach submit event handler to the form
+                $("#hallForm").submit(function (event) {
+                    event.preventDefault(); // Prevent default form submission
+                    var formData = $(this).serialize(); // Serialize form data
+                    $.ajax({
+                        type: "POST",
+                        url: "/Halls/CreateOrEdit",
+                        data: formData,
+                        success: function (result) {
+                            if (result.success) {
+                                if (result.message === 'Index') { // Validation passed
+                                    location.reload();// Reload page to update main view
+                                } else { // Validation failed
+                                    $("#name").val(result.hall.name);
+                                    $("#rows").val(result.hall.rows);
+                                    $("#columns").val(result.hall.columns);
+                                    alert(result.errors);
+                                }
+                            }
+                            else {
+                                alert(result.message);
+                            }
+                        }
+                    });
+                });
             }
         });
     }

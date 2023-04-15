@@ -1,37 +1,44 @@
-﻿@model cinema_project.Models.Seat
-
+﻿@model Ticket
 @{
-    ViewData["Title"] = "_TicketPartialView";
+    ViewData["Title"] = "_BuyTicket";
+    var hall = ViewBag.Hall;
 }
-
-
-<div class="modal fade" role="dialog" tabindex="-1" id="buyTicket" aria-labelledby="ticketOrder" aria-hidden="true">
-    <div class="modal-dialog" modal-lg modal-dialog-scrollable" role="document">
+<head>
+    <link rel="stylesheet" href="~/css/partialView.css" asp-append-version="true" />
+</head>
+<div class="modal fade" role="dialog" tabindex="-1" id="buyTicket" aria-labelledby="addTicketLable" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content" style="background-color:lightblue !important;">
-            <div class="modal-header">
-                <h3>Seat Details</h3>
-            </div>
+            <div class="modal-header"><h3>Hall</h3></div>
             <div class="modal-body">
-                <dl class="row">
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Row)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Row)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Column)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Column)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Hall)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Hall.Name)
-                    </dd>
-                </dl>
+                <form asp-action="BuyTicket">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SessionId" class="control-label"></label>
+                        <input asp-for="SessionId" class="form-control"></>
+                    </div>
+                    @*<div class="form-group">
+                        <label asp-for="Session.Movie.Name" class="control-label"></label>
+                        <input asp-for="Session.Movie.Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Session.StartDate" class="control-label"></label>
+                        <input asp-for="Session.StartDate" class="form-control" />
+                    </div>*@
+                    <div class="form-group">
+                        <label asp-for="PlaceId" class="control-label"></label>
+                        <input asp-for="PlaceId" class="form-control"></>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
