@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace cinema_project.Migrations
 {
-    public partial class Initialize : Migration
+    public partial class lab122 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -17,7 +17,7 @@ namespace cinema_project.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var tickets = await _context.Tickets.Include(t => t.Seat).Include(t => t.Session).ToListAsync();
+            var tickets = await _context.Tickets.Include(t => t.Seat).ThenInclude(s => s.Hall).Include(t => t.Session).ThenInclude(s => s.Movie).ToListAsync();
             return View(tickets);
         }
 

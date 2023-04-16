@@ -12,8 +12,8 @@ using cinema_project.Data;
 namespace cinema_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230415233654_Initialize")]
-    partial class Initialize
+    [Migration("20230416120722_lab122")]
+    partial class lab122
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
