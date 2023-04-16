@@ -58,7 +58,6 @@ namespace cinema_project.Controllers
         public async Task<IActionResult> ChoosePlace(int? Id)//Session id
         {
             Session? sessionObject = _dbContext.Sessions.Find(Id);
-            //Hall? hallObject = _dbContext.Halls.FindAsync(sessionObject.HallId).Result;
             Hall? hallObject = _dbContext.Halls.FindAsync(sessionObject.HallId).Result;
             hallObject.Sessions = _dbContext.Sessions.Where(el => el.Id == Id).ToList();
             return View(hallObject);
@@ -70,6 +69,7 @@ namespace cinema_project.Controllers
             Ticket ticket = new Ticket();
             ticket.SessionId = sessionId;
             ticket.Session = await _dbContext.Sessions.FindAsync(sessionId);
+            ticket.Session.Movie = await _dbContext.Movies.FindAsync(ticket.Session.MovieId);
             if(foundSeat == null)
             {
                 Seat seat = new Seat();
@@ -79,6 +79,7 @@ namespace cinema_project.Controllers
                 _dbContext.Add(seat);
                 await _dbContext.SaveChangesAsync();
                 var contextSeat = await _dbContext.Seats.Where(item => item.Row == row && item.Column == column && item.HallId == hallId).Include(h => h.Hall).FirstOrDefaultAsync();
+                contextSeat.Hall = await _dbContext.Halls.FindAsync(hallId);
                 ticket.Seat = contextSeat;
                 ViewBag.Hall = await _dbContext.Halls.FindAsync(hallId);
                 ticket.PlaceId = contextSeat.Id;
@@ -86,6 +87,7 @@ namespace cinema_project.Controllers
             }
             else
             {
+                foundSeat.Hall = await _dbContext.Halls.FindAsync(hallId);
                 ticket.Seat = foundSeat;
                 ticket.PlaceId = foundSeat.Id;
                 return PartialView("_BuyTicket", ticket);

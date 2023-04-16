@@ -57,8 +57,9 @@ namespace cinema_project.Controllers
             ViewBag.Halls = halls;
             IEnumerable<Movie> movies = _context.Movies;
             ViewBag.Movies = movies;
-            var movie = _context.Movies.FindAsync(session.MovieId);
-            session.EndDate = session.StartDate.AddMinutes(movie.Result.Duration);
+            var movie = await _context.Movies.FindAsync(session.MovieId);
+            //Bug with time.
+            session.EndDate = (movie!=null)?(session.StartDate.AddMinutes(movie.Duration)):(session.EndDate);
             var existSession = _context.Sessions.FirstOrDefaultAsync(m => m.MovieId == session.MovieId && m.StartDate == session.StartDate && m.EndDate == session.EndDate);
             if (existSession.Result == null)
             {

@@ -1,7 +1,12 @@
 ﻿@model Ticket
 @{
     ViewData["Title"] = "_BuyTicket";
-    var hall = ViewBag.Hall;
+    var hall = Model.Seat.Hall;
+    var session = Model.Session;
+    var seat = Model.Seat;
+    var movie = Model.Session.Movie;
+    int column = seat.Column + 1;
+    int row = seat.Row + 1;
 }
 <head>
     <link rel="stylesheet" href="~/css/partialView.css" asp-append-version="true" />
@@ -21,19 +26,35 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="SessionId" class="control-label"></label>
-                        <input asp-for="SessionId" class="form-control"></>
-                    </div>
-                    @*<div class="form-group">
-                        <label asp-for="Session.Movie.Name" class="control-label"></label>
-                        <input asp-for="Session.Movie.Name" class="form-control" />
+                        <input type="hidden" asp-for="SessionId" class="form-control" readonly></>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Session.StartDate" class="control-label"></label>
-                        <input asp-for="Session.StartDate" class="form-control" />
-                    </div>*@
+                        <label asp-for="@session.StartDate" class="control-label"></label>
+                        <input value="@session.StartDate" class="form-control" readonly></>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@session.EndDate" class="control-label"></label>
+                        <input value="@session.EndDate" class="form-control" readonly></>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@hall.Name" class="control-label"></label>
+                        <input value="@hall.Name" class="form-control" readonly></>
+                    </div>
                     <div class="form-group">
                         <label asp-for="PlaceId" class="control-label"></label>
-                        <input asp-for="PlaceId" class="form-control"></>
+                        <input type="hidden" asp-for="PlaceId" class="form-control" readonly></>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@seat.Column" class="control-label"></label>
+                        <input placeholder="@column" class="form-control" readonly></>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@seat.Row" class="control-label"></label>
+                        <input placeholder="@row" class="form-control" readonly></>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@movie.Name" class="control-label"></label>
+                        <input value="@movie.Name" class="form-control" readonly></>
                     </div>
                     <div class="modal-footer">
                         <input type="submit" value="Create" class="btn btn-primary" />
