@@ -14,7 +14,7 @@
 <div class="modal fade" role="dialog" tabindex="-1" id="buyTicket" aria-labelledby="addTicketLable" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content" style="background-color:#ffc8dd !important; border: 5px solid #cdb4db">
-            <div class="modal-header"><h3>Hall</h3></div>
+            <div class="modal-header"><h3>BuyTicket</h3></div>
             <div class="modal-body">
                 <form asp-action="BuyTicket">
                     <input type="hidden" asp-for="Id" />
@@ -37,7 +37,7 @@
                         <input value="@session.EndDate" class="form-control" readonly></>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@hall.Name" class="control-label"></label>
+                        <label asp-for="@hall.Name" class="control-label">HallName</label>
                         <input value="@hall.Name" class="form-control" readonly></>
                     </div>
                     <div class="form-group">
@@ -53,7 +53,7 @@
                         <input placeholder="@row" class="form-control" readonly></>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@movie.Name" class="control-label"></label>
+                        <label asp-for="@movie.Name" class="control-label">MovieName</label>
                         <input value="@movie.Name" class="form-control" readonly></>
                     </div>
                     <div class="modal-footer">

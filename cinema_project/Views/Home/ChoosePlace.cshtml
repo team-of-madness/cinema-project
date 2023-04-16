@@ -7,7 +7,7 @@
 	int hallId = Model.Id;
 	int sessionId = Model.Sessions[0].Id;
 	int usefull_var = 0;
-
+	List<string> occupiedSeats = ViewBag.OccupiedSeats;
 }
 <div id="ticketOrder"></div>
 <h1>Choose one seat</h1>
@@ -29,7 +29,13 @@
 				</th>
 				@for (int col = 0; col < cols; col++)
 				{
-					<td>
+                    <td>
+                        @if (occupiedSeats.Contains($"{row},{col}")) // Перевірка, чи місце зайняте
+                        {
+                            <button type="button" class="btn btn-danger"  style="height:38px; width:41px;" disabled>X</button>
+                        }
+						else
+						{
 						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#buyTicket" onclick="buyTicket(@row,@col,@hallId, @sessionId)">
 							<div style="height:15px; width:15px; display: inline-block;">
 								<div style="display: flex; justify-content: center;">
@@ -40,6 +46,7 @@
 								</div>
 							</div>
 						</button>
+						}
 					</td>
 				}
 			</tr>

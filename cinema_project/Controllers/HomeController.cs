@@ -57,6 +57,13 @@ namespace cinema_project.Controllers
         [HttpGet]
         public async Task<IActionResult> ChoosePlace(int? Id)//Session id
         {
+            var seats_dbContext = await _dbContext.Tickets.Include(t => t.Seat).Where(t => t.SessionId == Id).ToListAsync();
+            List<string> occupiedSeats = new List<string>();
+            foreach(var el in seats_dbContext)
+            {
+                occupiedSeats.Add(el.Seat.Row.ToString() + "," + el.Seat.Column.ToString());
+            }
+            ViewBag.OccupiedSeats = occupiedSeats;
             Session? sessionObject = _dbContext.Sessions.Find(Id);
             Hall? hallObject = _dbContext.Halls.FindAsync(sessionObject.HallId).Result;
             hallObject.Sessions = _dbContext.Sessions.Where(el => el.Id == Id).ToList();
